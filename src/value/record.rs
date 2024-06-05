@@ -4,6 +4,7 @@ use std::rc::Rc;
 use crate::typing::concept::Type;
 use crate::typing::algebraic::ProductType;
 use crate::typing::typedef::Structure;
+
 use crate::value::concept::{DataValue, ValueCell};
 use crate::value::error::TypeResult;
 use crate::value::sequence::Sequence;
@@ -20,17 +21,11 @@ impl Product {
         Ok(Product { product, value: Sequence::new(sequence, values)? })
     }
 
-    pub fn to_sequence(self) -> Sequence {
-        self.value
-    }
+    pub fn to_sequence(self) -> Sequence { self.value }
 
-    pub fn clone_sequence(&self) -> Sequence {
-        self.value.clone()
-    }
+    pub fn clone_sequence(&self) -> Sequence { self.value.clone() }
 
-    pub fn as_sequence(&self) -> &Sequence {
-        &self.value
-    }
+    pub fn as_sequence(&self) -> &Sequence { &self.value }
 
     pub fn get_element(&self, nth: usize) -> Option<ValueCell> {
         let fields = self.value.get();
@@ -45,9 +40,7 @@ impl Product {
 impl DataValue for Product {
     fn data_type(&self) -> Type { self.product.clone() }
 
-    fn raw(&self) -> Vec<u8> {
-        self.value.raw()
-    }
+    fn raw(&self) -> Vec<u8> { self.value.raw() }
 
     fn set(&mut self, raw: &[u8]) {
         self.value.set(raw);
@@ -70,29 +63,19 @@ impl Record {
 
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
 
-    pub fn to_sequence(self) -> Sequence {
-        self.value.to_sequence()
-    }
+    pub fn to_sequence(self) -> Sequence { self.value.to_sequence() }
 
-    pub fn clone_sequence(&self) -> Sequence {
-        self.value.clone().to_sequence()
-    }
+    pub fn clone_sequence(&self) -> Sequence { self.value.clone().to_sequence() }
 
-    pub fn as_sequence(&self) -> &Sequence {
-        self.value.as_sequence()
-    }
+    pub fn as_sequence(&self) -> &Sequence { self.value.as_sequence() }
 
-    pub fn get_field(&self, field: usize) -> Option<ValueCell> {
-        self.value.get_element(field)
-    }
+    pub fn get_field(&self, field: usize) -> Option<ValueCell> { self.value.get_element(field) }
 }
 
 impl DataValue for Record {
     fn data_type(&self) -> Type { self.of_type.clone() }
 
-    fn raw(&self) -> Vec<u8> {
-        self.value.raw()
-    }
+    fn raw(&self) -> Vec<u8> { self.value.raw() }
 
     fn set(&mut self, raw: &[u8]) {
         self.value.set(raw);

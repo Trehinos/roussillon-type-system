@@ -1,3 +1,5 @@
+//! This module defines the [SequenceType] alias to Vec<[Type]>.
+
 use crate::typing::concept::{DataType, Type};
 
 pub type SequenceType = Vec<Type>;

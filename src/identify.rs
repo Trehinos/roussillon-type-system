@@ -1,4 +1,6 @@
-//! A namespaced Identifier for types.
+//! A namespaced [Identifier] for named types like [crate::typing::typedef::Enumeration] and [crate::typing::typedef::Structure].
+//!
+//! The [Identified] trait helps to get information about the [Identifier] of a type. 
 
 use std::fmt::{Display, Formatter};
 
