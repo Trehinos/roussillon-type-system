@@ -10,17 +10,10 @@ use crate::typing::sequence::SequenceType;
 pub struct SumType(SequenceType);
 
 impl SumType {
-
-    pub fn to_rc(self) -> Rc<Self> { Rc::new(self) }
-    pub fn new(types: &[Type]) -> Self {
-        Self(types.to_vec())
-    }
-
-    pub fn to_sequence_type(&self) -> SequenceType {
-        self.0.to_vec()
-    }
-
+    pub fn new(types: &[Type]) -> Self { Self(types.to_vec()) }
+    pub fn to_sequence_type(&self) -> SequenceType { self.0.to_vec() }
     pub fn get_type(&self, tag: usize) -> Option<Type> { self.0.get(tag).cloned() }
+    pub fn to_rc(self) -> Rc<Self> { Rc::new(self) }
 }
 
 impl DataType for SumType {
@@ -37,28 +30,15 @@ impl DataType for SumType {
 pub struct ProductType(SequenceType);
 
 impl ProductType {
-
-    pub fn to_rc(self) -> Rc<Self> { Rc::new(self) }
-    pub fn new(types: &[Type]) -> Self {
-        Self(types.to_vec())
-    }
-
-    pub fn to_sequence_type(&self) -> SequenceType {
-        self.0.to_vec()
-    }
-    pub fn is_unit_type(&self) -> bool {
-        self.0.is_empty()
-    }
-
     pub const fn unit_type() -> Self { Self(Vec::new()) }
+    pub fn new(types: &[Type]) -> Self { Self(types.to_vec()) }
+    pub fn to_sequence_type(&self) -> SequenceType { self.0.to_vec() }
+    pub fn is_unit_type(&self) -> bool { self.0.is_empty() }
+    pub fn to_rc(self) -> Rc<Self> { Rc::new(self) }
 }
 
 impl DataType for ProductType {
-    fn size(&self) -> usize {
-        self.0.size()
-    }
+    fn size(&self) -> usize { self.0.size() }
 
-    fn typename(&self) -> String {
-        format!("<{}>", sequence::join(&self.0, "&"))
-    }
+    fn typename(&self) -> String { format!("<{}>", sequence::join(&self.0, "&")) }
 }
