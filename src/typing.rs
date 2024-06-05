@@ -20,3 +20,4 @@ pub mod sequence;
 pub mod algebraic;
 pub mod primitive;
 pub mod typedef;
+pub mod functional;

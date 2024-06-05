@@ -1,7 +1,7 @@
 # Roussillon : Type System
 
-> **Warning** This crate is an incomplete library with a clear goal of creating a new language.  
-> *Feel free to use it if needed.*
+> **This crate is an incomplete library** with a clear goal of creating a new language.  
+> *Feel free to use it if needed. It is usable as is.*
 >
 > In future versions, this crate may provide new types or new features on values.
 >
