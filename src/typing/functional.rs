@@ -1,17 +1,20 @@
+use std::rc::Rc;
+
 use crate::identify::Identifier;
 use crate::typing::concept::{DataType, Type};
 use crate::typing::sequence::{join, SequenceType};
+use crate::value::concept::ValueCell;
+use crate::value::sequence::Sequence;
 
 #[derive(Clone, Debug)]
 pub struct FunctionType {
-    arguments: SequenceType,
-    return_type: Type,
+    pub arguments: SequenceType,
+    pub return_type: Type,
 }
 
 impl FunctionType {
-    pub fn new(arguments: SequenceType, return_type: Type) -> Self {
-        FunctionType { arguments, return_type }
-    }
+    pub fn new(arguments: SequenceType, return_type: Type) -> Self { Self { arguments, return_type } }
+    pub fn to_rc(self) -> Rc<Self> { Rc::new(self) }
 }
 
 impl DataType for FunctionType {
@@ -24,7 +27,16 @@ impl DataType for FunctionType {
 
 #[derive(Clone, Debug)]
 pub struct FunctionDefinition {
-    identifier: Identifier,
-    signature: FunctionType,
-    execution: fn(),
+    pub identifier: Identifier,
+    pub signature: FunctionType,
+    execution: fn(&Sequence) -> ValueCell,
+}
+
+impl FunctionDefinition {
+    pub fn new(identifier: Identifier, signature: FunctionType, execution: fn(&Sequence) -> ValueCell) -> Self {
+        Self { identifier, signature, execution }
+    }
+    pub fn call(&self, arguments: &Sequence) -> ValueCell {
+        (self.execution)(arguments)
+    }
 }

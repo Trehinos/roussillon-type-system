@@ -1,5 +1,5 @@
 //! This module provides ways to manage Algebraic Data Types.
-//! 
+//!
 //! - The [SumType] struct describes a type which can have a value of one of its variant.
 //! - The [ProductType] struct describes a type which has a value for each one of its composing type.
 
@@ -48,8 +48,4 @@ impl DataType for ProductType {
     fn size(&self) -> usize { self.0.size() }
 
     fn typename(&self) -> String { format!("<{}>", sequence::join(&self.0, "&")) }
-}
-
-pub struct Gadt {
-    
 }
