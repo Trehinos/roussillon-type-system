@@ -16,8 +16,8 @@
 //! - [typedef::Enumeration]
 
 pub mod concept;
+pub mod primitive;
 pub mod sequence;
 pub mod algebraic;
-pub mod primitive;
 pub mod typedef;
 pub mod functional;

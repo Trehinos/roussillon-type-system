@@ -10,15 +10,15 @@ use crate::value::error::TypeResult;
 use crate::value::sequence::Sequence;
 
 #[derive(Clone, Debug)]
-pub struct Product {
+pub struct ProductValue {
     product: Rc<ProductType>,
     value: Sequence,
 }
 
-impl Product {
+impl ProductValue {
     pub fn new(product: Rc<ProductType>, values: &[ValueCell]) -> TypeResult<Self> {
         let sequence = product.to_sequence_type();
-        Ok(Product { product, value: Sequence::new(sequence, values)? })
+        Ok(ProductValue { product, value: Sequence::new(sequence, values)? })
     }
 
     pub fn to_sequence(self) -> Sequence { self.value }
@@ -37,7 +37,7 @@ impl Product {
     }
 }
 
-impl DataValue for Product {
+impl DataValue for ProductValue {
     fn data_type(&self) -> Type { self.product.clone() }
 
     fn raw(&self) -> Vec<u8> { self.value.raw() }
@@ -50,14 +50,14 @@ impl DataValue for Product {
 #[derive(Clone, Debug)]
 pub struct Record {
     of_type: Rc<Structure>,
-    value: Product,
+    value: ProductValue,
 }
 
 impl Record {
     pub fn new(structure_type: Rc<Structure>, values: &[ValueCell]) -> TypeResult<Self> {
         Ok(Record {
             of_type: structure_type.clone(),
-            value: Product::new(Rc::new(structure_type.product_type.clone()), values)?,
+            value: ProductValue::new(Rc::new(structure_type.product_type.clone()), values)?,
         })
     }
 
