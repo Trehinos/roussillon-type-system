@@ -36,12 +36,8 @@ impl Display for Identifier {
 
 pub trait Identified {
     fn identifier(&self) -> Identifier;
-    fn name(&self) -> String {
-        self.identifier().name
-    }
-    fn space(&self) -> String {
-        self.identifier().space
-    }
+    fn name(&self) -> String { self.identifier().name }
+    fn space(&self) -> String { self.identifier().space }
     fn fully_qualified_name(&self, current_namespace: String) -> String {
         if self.space().is_empty() {
             format!("{}/{}", current_namespace, self.identifier())

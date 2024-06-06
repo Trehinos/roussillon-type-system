@@ -26,15 +26,27 @@ impl DataType for FunctionType {
 }
 
 #[derive(Clone, Debug)]
-pub struct FunctionDefinition {
+pub struct FunctionDeclaration {
     pub identifier: Identifier,
     pub signature: FunctionType,
+}
+
+impl FunctionDeclaration {
+    pub fn new(identifier: Identifier, signature: FunctionType) -> Self {
+        Self { identifier, signature }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct FunctionDefinition {
+    pub declaration: FunctionDeclaration,
     execution: fn(&Sequence) -> ValueCell,
 }
 
 impl FunctionDefinition {
-    pub fn new(identifier: Identifier, signature: FunctionType, execution: fn(&Sequence) -> ValueCell) -> Self {
-        Self { identifier, signature, execution }
+
+    pub fn new(declaration: FunctionDeclaration, execution: fn(&Sequence) -> ValueCell) -> Self {
+        Self { declaration, execution }
     }
     pub fn call(&self, arguments: &Sequence) -> ValueCell {
         (self.execution)(arguments)

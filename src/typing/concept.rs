@@ -19,14 +19,22 @@ pub trait DataType {
 /// A reference-counted dynamic [DataType].
 pub type Type = Rc<dyn DataType>;
 
-impl Display for dyn DataType + 'static {
+impl Display for dyn DataType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.typename())
     }
 }
 
-impl Debug for dyn DataType + 'static {
+impl Debug for dyn DataType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "<{}>", self)
     }
 }
+
+impl PartialEq for dyn DataType {
+    fn eq(&self, other: &Self) -> bool {
+        self.typename() == other.typename()
+    }
+}
+
+impl Eq for dyn DataType {}
