@@ -49,3 +49,7 @@ impl DataType for ProductType {
 
     fn typename(&self) -> String { format!("<{}>", sequence::join(&self.0, "&")) }
 }
+
+pub struct Gadt {
+    
+}

@@ -16,18 +16,37 @@ pub type List = (Type, usize);
 #[derive(Clone, Debug)]
 pub enum Primitive {
     /// A type to hold `true` or `false` values.
+    ///
+    /// Value is [crate::value::boolean::Boolean]
     Boolean,
     /// A type to manage byte at low level.
+    ///
+    /// Value is [crate::value::byte::Bytes::Byte]
     Byte,
-    /// A type to manage words composed of butes at low level.
+    /// A type to manage words composed of bytes at low level.
+    ///
+    /// Value can be :
+    /// * [crate::value::byte::Bytes::Word] for size = 2,
+    /// * [crate::value::byte::Bytes::Quad] for size = 4,
+    /// * [crate::value::byte::Bytes::Long] for size = 8,
+    /// * [crate::value::byte::Bytes::Wide] for size = 16, or,
+    /// * [crate::value::byte::Bytes::Bytes] for any other size.
     Bytes(usize),
     /// A type to perform floating-point arithmetic.
+    /// 
+    /// Value is [crate::value::number::Float]
     Float,
     /// A type to perform integral arithmetic.
+    ///
+    /// Value is [crate::value::number::Integer]
     Integer,
     /// A type intended to retain an address to a value of a specific type.
+    ///
+    /// Value is [crate::value::reference::Reference]
     Reference(Type),
     /// A collection type which contains many elements of a specific type.
+    ///
+    /// Value is [crate::value::list::List]
     List(List),
 }
 

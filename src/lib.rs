@@ -54,13 +54,14 @@ mod tests {
 
     #[test]
     fn test() {
-        let class = Structure::new("MyClass", ProductType::new(&[
+        let my_struct = Structure::new("MyStruct", ProductType::new(&[
             Primitive::Integer.to_rc(),
             Primitive::Integer.to_rc(),
             Primitive::Float.to_rc(),
         ])).to_rc();
+        println!("\n{:?}", my_struct);
 
-        let object = Record::new(class.clone(), &[
+        let object = Record::new(my_struct.clone(), &[
             Integer::new(40).to_cell(),
             Integer::new(96).to_cell(),
             Float::new(40.0).to_cell()
@@ -75,7 +76,7 @@ mod tests {
             println!("\n{:?}", field.borrow());
         }
 
-        let some = Structure::new("Some", ProductType::new(&[class.clone()])).to_rc();
+        let some = Structure::new("Some", ProductType::new(&[my_struct.clone()])).to_rc();
         let none = Structure::new("None", ProductType::unit_type()).to_rc();
         let option_class = Enumeration::new("Option", SumType::new(&[
             none.clone(),
@@ -97,7 +98,7 @@ mod tests {
         println!("\n{:?}", union_object);
         println!("\n{:?}", union_object.current_value().borrow());
 
-        let constructor = FunctionType::new(class.product_type.to_sequence_type(), class);
+        let constructor = FunctionType::new(my_struct.product_type.to_sequence_type(), my_struct);
         println!("\nConstructor type : {}", constructor.typename())
     }
 }

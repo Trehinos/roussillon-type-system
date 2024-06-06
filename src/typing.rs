@@ -14,6 +14,35 @@
 //! - [algebraic::SumType]
 //! - [typedef::Structure]
 //! - [typedef::Enumeration]
+//! 
+//! ## Example
+//! 
+//! Create a "MyStruct" [typedef::Structure] with 3 fields :
+//! ```
+//! use roussillon_type_system::typing::primitive::Primitive;
+//! use roussillon_type_system::typing::algebraic::ProductType;
+//! use roussillon_type_system::typing::typedef::Structure;
+//!
+//! let my_struct = Structure::new("MyStruct", ProductType::new(&[
+//!     Primitive::Integer.to_rc(),
+//!     Primitive::Integer.to_rc(),
+//!     Primitive::Float.to_rc(),
+//! ])).to_rc();
+//! ```
+//! 
+//! This program creates the following my_struct object : 
+//! ```-
+//! Structure {
+//!     identifier: Identifier {
+//!         space: "",
+//!         name: "MyStruct"
+//!     },
+//!     product_type: ProductType([<integer>, <integer>, <float>])
+//! }
+//! ```
+//! 
+//! 
+//! 
 
 pub mod concept;
 pub mod primitive;
