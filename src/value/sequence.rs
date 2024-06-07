@@ -14,6 +14,14 @@ pub struct Sequence {
 }
 
 impl Sequence {
+    
+    pub fn empty() -> Self {
+        Self {
+            definition: vec![],
+            values: vec![],
+        }
+    }
+    
     pub fn new(definition: SequenceType, values: &[ValueCell]) -> TypeResult<Self> {
         if definition.len() != values.len() {
             return Err(SequenceError::SequenceLengthMismatch { expected: 0, provided: 0 }.promote());

@@ -36,19 +36,3 @@ impl FunctionDeclaration {
         Self { identifier, signature }
     }
 }
-
-#[derive(Clone, Debug)]
-pub struct FunctionDefinition {
-    pub declaration: FunctionDeclaration,
-    execution: fn(&Sequence) -> ValueCell,
-}
-
-impl FunctionDefinition {
-
-    pub fn new(declaration: FunctionDeclaration, execution: fn(&Sequence) -> ValueCell) -> Self {
-        Self { declaration, execution }
-    }
-    pub fn call(&self, arguments: &Sequence) -> ValueCell {
-        (self.execution)(arguments)
-    }
-}

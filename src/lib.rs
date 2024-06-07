@@ -1,14 +1,14 @@
 //! # Roussillon : Type System
 //!
 //! This crate provides some structs and traits to manage types and typed values.
-//! 
+//!
 //! This crate goal **IS NOT** to manage memory allocation.
 //!
 //! ## Primitive types
-//! 
+//!
 //! These are the necessary types to construct any other meaningful type.
 //! Usually, these are "machine types" :
-//! 
+//!
 //! - [typing::primitive::Primitive::Boolean] type of [value::boolean::Boolean],
 //! - [typing::primitive::Primitive::Byte] type of [value::byte::Bytes::Byte],
 //! - [typing::primitive::Primitive::Bytes] type of :
@@ -21,35 +21,39 @@
 //! - [typing::primitive::Primitive::Integer] type of [value::number::Integer],
 //! - [typing::primitive::Primitive::Reference] type of [value::reference::Reference],
 //! - [typing::primitive::Primitive::List] type of [value::list::List],
-//! 
+//!
 //! ## The "tuple" type
-//! 
+//!
 //! - [typing::sequence::SequenceType] type of [value::sequence::Sequence],
-//! 
+//!
 //! ## Algebraic Data Types
-//! 
+//!
 //! - [typing::algebraic::SumType] type of [value::union::SumValue],
 //! - [typing::algebraic::ProductType] type of [value::record::ProductValue],
-//! 
+//!
 //! #### Custom types (ADT with an Identifier)
-//! 
+//!
 //! - [typing::typedef::Enumeration] type of [value::union::Union],
 //! - [typing::typedef::Structure] type of [value::record::Record],
 
 
 pub mod identify;
 pub mod typing;
+pub mod effect;
 pub mod value;
 
 #[cfg(test)]
 mod tests {
+    use crate::identify::Identifier;
     use crate::typing::algebraic::{ProductType, SumType};
     use crate::typing::concept::DataType;
     use crate::typing::functional::FunctionType;
+    use crate::typing::gadt::Gadt;
     use crate::typing::primitive::Primitive;
     use crate::typing::typedef::{Enumeration, Structure};
     use crate::value::number::{Float, Integer};
     use crate::value::record::Record;
+    use crate::value::sequence::Sequence;
     use crate::value::union::Union;
 
     #[test]
@@ -67,7 +71,6 @@ mod tests {
             Float::new(40.0).to_cell()
         ]).unwrap();
         println!("\n{:?}", object.clone().to_cell().borrow());
-
 
 
         let x = 3 + 3;
@@ -100,5 +103,18 @@ mod tests {
 
         let constructor = FunctionType::new(my_struct.product_type.to_sequence_type(), my_struct);
         println!("\nConstructor type : {}", constructor.typename())
+    }
+
+    #[test]
+    fn test_gadt() {
+        let expr = Gadt::new(
+            Identifier::new("Expr"),
+            &[
+                FunctionType::new(vec![], Primitive::Integer.to_rc()),
+                FunctionType::new(vec![], Primitive::Integer.to_rc()),
+            ],
+            |gadt, tag, arguments| todo!(),
+        );
+        println!("{:?}", expr.eval(1, &Sequence::empty()))
     }
 }
