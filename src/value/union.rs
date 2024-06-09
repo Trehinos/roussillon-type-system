@@ -18,7 +18,7 @@ pub struct SumValue {
 impl SumValue {
     pub fn new(sum: Rc<SumType>, tag: usize, value: ValueCell) -> TypeResult<Self> {
         let provided_type = value.borrow().data_type();
-        if let Some(expected_type) = sum.get_type(tag) {
+        if let Some(expected_type) = sum.variant(tag) {
             if expected_type.typename() == provided_type.typename() {
                 Ok(Self { sum, value, tag })
             } else {

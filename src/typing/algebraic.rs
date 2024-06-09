@@ -4,6 +4,7 @@
 //! - The [ProductType] struct describes a type which has a value for each one of its composing type.
 
 use std::cmp::max;
+use std::ops::{Add, Mul};
 use std::rc::Rc;
 
 use crate::typing::concept::{DataType, Type};
@@ -18,7 +19,7 @@ pub struct SumType(Tuple);
 impl SumType {
     pub fn new(types: &[Type]) -> Self { Self(types.to_vec()) }
     pub fn to_sequence_type(&self) -> Tuple { self.0.to_vec() }
-    pub fn get_type(&self, tag: usize) -> Option<Type> { self.0.get(tag).cloned() }
+    pub fn variant(&self, tag: usize) -> Option<Type> { self.0.get(tag).cloned() }
     pub fn to_rc(self) -> Rc<Self> { Rc::new(self) }
 }
 
@@ -32,6 +33,16 @@ impl DataType for SumType {
     }
 }
 
+impl Add<Type> for SumType {
+    type Output = Self;
+
+    fn add(self, rhs: Type) -> Self::Output {
+        let mut new = self.clone();
+        new.0.push(rhs);
+        new
+    }
+}
+
 /// This struct describes a type which has a value for each one of its composing type.
 #[derive(Clone, Debug)]
 pub struct ProductType(Tuple);
@@ -42,6 +53,16 @@ impl ProductType {
     pub fn to_sequence_type(&self) -> Tuple { self.0.to_vec() }
     pub fn is_unit_type(&self) -> bool { self.0.is_empty() }
     pub fn to_rc(self) -> Rc<Self> { Rc::new(self) }
+}
+
+impl Mul<Type> for ProductType {
+    type Output = Self;
+
+    fn mul(self, rhs: Type) -> Self::Output {
+        let mut new = self.clone();
+        new.0.push(rhs);
+        new
+    }
 }
 
 impl DataType for ProductType {
