@@ -1,3 +1,9 @@
+//! This module provides common constructions to create custom types.
+//! 
+//! It lets the user identify algebraic types :
+//! - [Structure] is an [Identified] : [ProductType],
+//! - [Enumeration] is an [Identified] : [SumType],
+
 use std::rc::Rc;
 use crate::identify::{Identified, Identifier};
 use crate::typing::algebraic::{ProductType, SumType};

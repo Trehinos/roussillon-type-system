@@ -4,6 +4,7 @@
 
 use std::fmt::{Display, Formatter};
 
+/// An identifier with a namespace.
 #[derive(Clone, Eq, PartialEq, Debug)]
 pub struct Identifier {
     pub space: String,
@@ -47,6 +48,7 @@ pub trait Identified {
     }
 }
 
+/// A label to identify fields or members.
 #[derive(Clone, Eq, PartialEq, Debug)]
 pub struct Label(String);
 

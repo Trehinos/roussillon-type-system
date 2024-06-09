@@ -1,3 +1,21 @@
+//! All values corresponding types in the module [crate::typing].
+//! 
+//! - [byte::Bytes::Byte]
+//! - [byte::Bytes::Arch]
+//! - [byte::Bytes::Word]
+//! - [byte::Bytes::Quad]
+//! - [byte::Bytes::Long]
+//! - [byte::Bytes::Wide]
+//! - [byte::Bytes::Bytes]
+//! - [number::Integer]
+//! - [number::Float]
+//! - [list::List]
+//! - [sequence::Sequence]
+//! - [record::ProductValue]
+//! - [record::Record]
+//! - [union::SumValue]
+//! - [union::Union]
+
 
 pub mod concept;
 pub mod error;

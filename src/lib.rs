@@ -43,8 +43,6 @@
 //! ### Functional
 //!
 //! - [typing::functional::FunctionType] type of [typing::functional::FunctionDeclaration] composed in [value::function::FunctionDefinition] with [value::function::FunctionBody].
-//! - Todo : impl
-//! - [typing::gadt::Gadt].
 
 
 pub mod identify;
