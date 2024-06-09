@@ -15,6 +15,8 @@ impl Float {
         self.0
     }
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
+    
+    pub fn from(raw: &[u8]) -> Self { Self::new(f64::from_be_bytes(raw.try_into().unwrap_or_default())) }
 }
 
 impl DataValue for Float {
@@ -27,22 +29,23 @@ impl DataValue for Float {
     }
 
     fn set(&mut self, raw: &[u8]) {
-        self.0 = f64::from_be_bytes(raw.try_into().unwrap())
+        *self = Self::from(raw)
     }
 }
 
 
 #[derive(Copy, Clone, Debug)]
-pub struct Integer(u64);
+pub struct Integer(i64);
 
 impl Integer {
-    pub const fn new(value: u64) -> Self { Self(value) }
+    pub const fn new(value: i64) -> Self { Self(value) }
 
-    pub fn value(&self) -> u64 {
+    pub fn value(&self) -> i64 {
         self.0
     }
 
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
+    pub fn from(raw: &[u8]) -> Self { Self::new(i64::from_be_bytes(raw.try_into().unwrap_or_default())) }
 }
 
 impl DataValue for Integer {
@@ -54,7 +57,5 @@ impl DataValue for Integer {
         self.0.to_be_bytes().to_vec()
     }
 
-    fn set(&mut self, raw: &[u8]) {
-        self.0 = u64::from_be_bytes(raw.try_into().unwrap())
-    }
+    fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
 }

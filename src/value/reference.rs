@@ -20,6 +20,9 @@ impl Reference {
     }
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
     pub fn referenced(&self) -> &Type { &self.to_type }
+    pub fn from(t: Type, raw: &[u8]) -> Self {
+        Self::new(t, usize::from_be_bytes(raw.try_into().unwrap_or_default()))
+    }
 }
 
 impl PartialEq for Reference {
