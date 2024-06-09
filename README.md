@@ -32,7 +32,7 @@ Usually, these are "machine types" :
 
 #### The "tuple" type
 
-- SequenceType
+- Tuple
 
 #### Algebraic Data Types
 
@@ -41,30 +41,36 @@ Usually, these are "machine types" :
 
 #### Custom types (ADT with an Identifier)
 
-- Enumeration (values are called unions).
+- Enumeration (values are called unions)
 - Structure
+
+#### Functional
+
+- FunctionType
 
 ### Value module
 
 The **value** module provides ways to create values from all types in the **typing** module.
 
 The provided constructible values are :
+
 - Boolean
 - Bytes (arbitrarily size)
-  - Byte (8 bits)
-  - Word (16)
-  - Quad (32)
-  - Long (64)
-  - Wide (128)
+    - Byte (8 bits)
+    - Word (16)
+    - Quad (32)
+    - Long (64)
+    - Wide (128)
 - Integer
 - Float
 - Reference
 - List
-- Sequence
-- Sum
-- Product
-- Union
-- Record
+- Sequence (Tuple values)
+- Sum (SumpType values)
+- Product (ProductType values)
+- Union (Enumeration values)
+- Record (Structure values)
+- FunctionBody
 
 ## License
 

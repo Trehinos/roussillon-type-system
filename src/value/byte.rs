@@ -12,6 +12,7 @@ pub enum Bytes {
     Quad(u32),
     Long(u64),
     Wide(u128),
+    Arch(usize),
     Bytes(Vec<u8>, usize),
 }
 
@@ -26,6 +27,15 @@ impl Bytes {
             l => Self::Bytes(raw.to_vec(), l)
         }
     }
+
+    pub fn try_from_arch(raw: &[u8]) -> Result<Self, ()> {
+        if raw.len() == std::mem::size_of::<usize>() {
+            Ok(Self::Arch(usize::from_be_bytes(raw.try_into().unwrap())))
+        } else {
+            Err(())
+        }
+    }
+
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
 }
 
@@ -33,17 +43,19 @@ impl DataValue for Bytes {
     fn data_type(&self) -> Type {
         match self {
             Bytes::Byte(_) => Primitive::Byte,
+            Bytes::Arch(_) => Primitive::Bytes(std::mem::size_of::<usize>()),
             Bytes::Word(_) => Primitive::Bytes(2),
             Bytes::Quad(_) => Primitive::Bytes(4),
             Bytes::Long(_) => Primitive::Bytes(8),
             Bytes::Wide(_) => Primitive::Bytes(16),
-            Bytes::Bytes(_, l) => Primitive::Bytes(*l)
+            Bytes::Bytes(_, l) => Primitive::Bytes(*l),
         }.to_rc()
     }
 
     fn raw(&self) -> Vec<u8> {
         match self {
             Bytes::Byte(b) => b.to_be_bytes().to_vec(),
+            Bytes::Arch(a) => a.to_be_bytes().to_vec(),
             Bytes::Word(w) => w.to_be_bytes().to_vec(),
             Bytes::Quad(q) => q.to_be_bytes().to_vec(),
             Bytes::Long(l) => l.to_be_bytes().to_vec(),

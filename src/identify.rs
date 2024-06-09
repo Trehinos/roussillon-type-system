@@ -46,3 +46,20 @@ pub trait Identified {
         }
     }
 }
+
+#[derive(Clone, Eq, PartialEq, Debug)]
+pub struct Label(String);
+
+impl Label {
+    pub fn new(name: &str) -> Self {
+        Label(name.to_string())
+    }
+}
+
+impl Display for Label {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result { write!(f, "{}", self.0) }
+}
+
+pub trait Labelled {
+    fn label(&self) -> Label;
+}

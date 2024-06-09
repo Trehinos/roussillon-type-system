@@ -24,17 +24,27 @@
 //!
 //! ## The "tuple" type
 //!
-//! - [typing::sequence::SequenceType] type of [value::sequence::Sequence],
+//! A sequence of heterogeneous typed values.
+//!
+//! - [typing::sequence::Tuple] type of [value::sequence::Sequence],
 //!
 //! ## Algebraic Data Types
 //!
 //! - [typing::algebraic::SumType] type of [value::union::SumValue],
 //! - [typing::algebraic::ProductType] type of [value::record::ProductValue],
 //!
-//! #### Custom types (ADT with an Identifier)
+//! ## Custom types
+//!
+//! These types are [identify::Identified] ADTs with [identify::Labelled] fields.
 //!
 //! - [typing::typedef::Enumeration] type of [value::union::Union],
 //! - [typing::typedef::Structure] type of [value::record::Record],
+//!
+//! ### Functional
+//!
+//! - [typing::functional::FunctionType] type of [typing::functional::FunctionDeclaration] composed in [value::function::FunctionDefinition] with [value::function::FunctionBody].
+//! - Todo : impl
+//! - [typing::gadt::Gadt].
 
 
 pub mod identify;
@@ -44,16 +54,13 @@ pub mod value;
 
 #[cfg(test)]
 mod tests {
-    use crate::identify::Identifier;
     use crate::typing::algebraic::{ProductType, SumType};
     use crate::typing::concept::DataType;
     use crate::typing::functional::FunctionType;
-    use crate::typing::gadt::Gadt;
     use crate::typing::primitive::Primitive;
     use crate::typing::typedef::{Enumeration, Structure};
     use crate::value::number::{Float, Integer};
     use crate::value::record::Record;
-    use crate::value::sequence::Sequence;
     use crate::value::union::Union;
 
     #[test]
@@ -105,16 +112,4 @@ mod tests {
         println!("\nConstructor type : {}", constructor.typename())
     }
 
-    #[test]
-    fn test_gadt() {
-        let expr = Gadt::new(
-            Identifier::new("Expr"),
-            &[
-                FunctionType::new(vec![], Primitive::Integer.to_rc()),
-                FunctionType::new(vec![], Primitive::Integer.to_rc()),
-            ],
-            |gadt, tag, arguments| todo!(),
-        );
-        println!("{:?}", expr.eval(1, &Sequence::empty()))
-    }
 }

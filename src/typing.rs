@@ -9,11 +9,12 @@
 //! - [primitive::Primitive::Integer]
 //! - [primitive::Primitive::Float]
 //! - [primitive::Primitive::List]
-//! - [sequence::SequenceType]
+//! - [sequence::Tuple]
 //! - [algebraic::ProductType]
 //! - [algebraic::SumType]
 //! - [typedef::Structure]
 //! - [typedef::Enumeration]
+//! - [functional::FunctionType]
 //! 
 //! ## Example
 //! 
@@ -50,4 +51,3 @@ pub mod sequence;
 pub mod algebraic;
 pub mod typedef;
 pub mod functional;
-pub mod gadt;

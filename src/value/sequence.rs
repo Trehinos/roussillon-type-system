@@ -3,13 +3,13 @@ use std::fmt::Debug;
 use std::rc::Rc;
 
 use crate::typing::concept::Type;
-use crate::typing::sequence::SequenceType;
+use crate::typing::sequence::Tuple;
 use crate::value::concept::{DataValue, ValueCell};
 use crate::value::error::{SequenceError, TypeResult};
 
 #[derive(Clone, Debug)]
 pub struct Sequence {
-    definition: SequenceType,
+    definition: Tuple,
     values: Vec<ValueCell>,
 }
 
@@ -22,7 +22,7 @@ impl Sequence {
         }
     }
     
-    pub fn new(definition: SequenceType, values: &[ValueCell]) -> TypeResult<Self> {
+    pub fn new(definition: Tuple, values: &[ValueCell]) -> TypeResult<Self> {
         if definition.len() != values.len() {
             return Err(SequenceError::SequenceLengthMismatch { expected: 0, provided: 0 }.promote());
         }
