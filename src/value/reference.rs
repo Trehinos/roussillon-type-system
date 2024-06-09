@@ -19,6 +19,7 @@ impl Reference {
         self.address
     }
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
+    pub fn referenced(&self) -> &Type { &self.to_type }
 }
 
 impl PartialEq for Reference {
