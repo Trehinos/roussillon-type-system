@@ -1,8 +1,11 @@
 //! This module defines the [Tuple] alias to Vec<[Type]>.
-//! 
+//!
 //! This type is used in any "type collection" like [crate::types::algebraic::SumType] and [crate::types::algebraic::ProductType].
 
 use crate::types::concept::{DataType, Type};
+use crate::value::concept::ValueCell;
+use crate::value::error::TypeResult;
+use crate::value::sequence::Sequence;
 
 pub type Tuple = Vec<Type>;
 
@@ -32,5 +35,9 @@ impl DataType for Tuple {
 
     fn typename(&self) -> String {
         join(self, ",")
+    }
+
+    fn construct_from_raw(&self, raw: &[u8]) -> TypeResult<ValueCell> {
+        Ok(Sequence::from(self.clone(), raw)?.to_cell())
     }
 }

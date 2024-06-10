@@ -107,7 +107,7 @@ mod tests {
         println!("\n{:?}", union_object);
         println!("\n{:?}", union_object.current_value().borrow());
 
-        let constructor = FunctionType::new(my_struct.product_type.to_sequence_type(), my_struct);
+        let constructor = FunctionType::new(my_struct.product_type.to_tuple(), my_struct);
         println!("\nConstructor type : {}", constructor.typename())
     }
 

@@ -30,6 +30,20 @@ impl List {
         Ok(())
     }
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
+    
+    pub fn item(&self, index: usize) -> Option<ValueCell> {
+        self.elements.get(index).cloned()
+    }
+
+    pub fn from(of_type: Type, size: usize, raw: &[u8]) -> Self {
+        let mut elements = Vec::new();
+        for i in 0..size {
+            let raw_element = &raw[i * of_type.size()..(i + 1) * of_type.size()];
+            let element = of_type.construct_from_raw(raw_element).unwrap();
+            elements.push(element);
+        }
+        List { of_type, elements }
+    }
 }
 
 impl Index<usize> for List {

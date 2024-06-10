@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.6
+
+- Add raw-value based constructors to DataType implementation and all types except for FunctionType.
+- Add method 'from' in List, Sequence, ProductValue, SumValue, Record and Union.
+
 ## v0.1.5
 
 - Add parsing functionality for Boolean, Bytes, Integer and Float values.

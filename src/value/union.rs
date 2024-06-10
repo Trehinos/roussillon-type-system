@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use std::fmt::{Debug, Formatter};
 use std::rc::Rc;
 
-use crate::types::concept::Type;
+use crate::types::concept::{DataType, Type};
 use crate::types::algebraic::SumType;
 use crate::types::typedef::Enumeration;
 use crate::value::concept::{DataValue, ValueCell};
@@ -34,7 +34,7 @@ impl SumValue {
     }
 
     pub fn current_type(&self) -> Type {
-        self.sum.to_sequence_type()[self.tag].clone()
+        self.sum.to_tuple()[self.tag].clone()
     }
 
     pub fn current_value(&self) -> &ValueCell { &self.value }
@@ -45,14 +45,29 @@ impl SumValue {
         *self = Self::new(self.sum.clone(), tag, new_value)?;
         Ok(())
     }
+
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
+
+    pub fn from(t: Rc<SumType>, raw: &[u8]) -> TypeResult<Self> {
+        let (tag_bytes, raw_value) = raw.split_at(8);
+        let tag = usize::from_be_bytes(tag_bytes.try_into().unwrap());
+        if let Some(variant_type) = t.variant(tag) {
+            let value = variant_type.construct_from_raw(&raw_value)?;
+            Ok(Self::new(t.clone(), tag, value)?)
+        } else {
+            Err(SumTypeError::InvalidCase { provided_type: t.clone() }.promote())
+        }
+    }
 }
 
 impl DataValue for SumValue {
     fn data_type(&self) -> Type { self.sum.clone() }
 
     fn raw(&self) -> Vec<u8> {
-        self.value.borrow().raw()
+        let mut raw = Vec::new();
+        raw.extend(self.tag.to_be_bytes());
+        raw.extend(self.value.borrow().raw());
+        raw
     }
 
     fn set(&mut self, raw: &[u8]) {
@@ -69,7 +84,7 @@ pub struct Union {
 
 impl Union {
     pub fn new(union: Rc<Enumeration>, tag: usize, value: ValueCell) -> TypeResult<Self> {
-        Ok(Self { of_type: union.clone(), value: SumValue::new(Rc::new(union.sum_type.clone()), tag, value)? })
+        Ok(Self { of_type: union.clone(), value: SumValue::new(union.sum_type.clone().to_rc(), tag, value)? })
     }
     pub fn current_type(&self) -> Type { self.value.current_type() }
     pub fn current_value(&self) -> &ValueCell { self.value.current_value() }
@@ -80,6 +95,10 @@ impl Union {
         self.value.set_cell(tag, new_value)
     }
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
+    
+    pub fn from(t: Rc<Enumeration>, raw: &[u8]) -> TypeResult<Self> {
+        Ok(Self{ of_type: t.clone(), value: SumValue::from(t.sum_type.clone().to_rc(), raw)? })
+    }
 }
 
 impl DataValue for Union {

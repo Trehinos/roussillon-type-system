@@ -3,6 +3,8 @@ use std::rc::Rc;
 use crate::identity::Identifier;
 use crate::types::concept::{DataType, Type};
 use crate::types::sequence::{join, Tuple};
+use crate::value::concept::ValueCell;
+use crate::value::error::TypeResult;
 
 #[derive(Clone, Debug)]
 pub struct FunctionType {
@@ -20,6 +22,10 @@ impl DataType for FunctionType {
 
     fn typename(&self) -> String {
         format!("fn<({}), {}>", join(&self.arguments, ","), self.return_type)
+    }
+
+    fn construct_from_raw(&self, raw: &[u8]) -> TypeResult<ValueCell> {
+        todo!()
     }
 }
 

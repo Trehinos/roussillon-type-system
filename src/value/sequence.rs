@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use std::fmt::Debug;
 use std::rc::Rc;
 
-use crate::types::concept::Type;
+use crate::types::concept::{DataType, Type};
 use crate::types::sequence::Tuple;
 use crate::value::concept::{DataValue, ValueCell};
 use crate::value::error::{SequenceError, TypeResult};
@@ -40,6 +40,18 @@ impl Sequence {
         self.values().to_vec()
     }
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
+    
+    pub fn from(definition: Tuple, raw: &[u8]) -> TypeResult<Self> {
+        let mut values = Vec::new();
+        let mut start = 0;
+        let mut end = 0;
+        for t in definition.iter() {
+            end += t.size();
+            values.push(t.construct_from_raw(&raw[start..end])?);
+            start = end;
+        }
+        Self::new(definition.clone(), &values)
+    }
 }
 
 pub fn values_to_raw(values: &[ValueCell]) -> Vec<u8> {

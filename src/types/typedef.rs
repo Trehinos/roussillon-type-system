@@ -1,5 +1,5 @@
 //! This module provides common constructions to create custom types.
-//! 
+//!
 //! It lets the user identify algebraic types :
 //! - [Structure] is an [Identified] : [ProductType],
 //! - [Enumeration] is an [Identified] : [SumType],
@@ -8,6 +8,8 @@ use std::rc::Rc;
 use crate::identity::{Identified, Identifier};
 use crate::types::algebraic::{ProductType, SumType};
 use crate::types::concept::DataType;
+use crate::value::concept::ValueCell;
+use crate::value::error::TypeResult;
 
 /// A [Structure] is an identified [ProductType].
 #[derive(Clone, Debug)]
@@ -23,7 +25,7 @@ impl Structure {
             product_type: fields,
         }
     }
-    
+
     pub fn to_rc(self) -> Rc<Self> { Rc::new(self) }
 }
 
@@ -31,6 +33,10 @@ impl DataType for Structure {
     fn size(&self) -> usize { self.product_type.size() }
 
     fn typename(&self) -> String { self.identifier.to_string() }
+
+    fn construct_from_raw(&self, raw: &[u8]) -> TypeResult<ValueCell> {
+        self.product_type.construct_from_raw(raw)
+    }
 }
 
 impl Identified for Structure {
@@ -50,7 +56,7 @@ impl Enumeration {
     pub fn new(identifier: &str, sum_type: SumType) -> Self {
         Enumeration {
             identifier: Identifier::new(identifier),
-            sum_type
+            sum_type,
         }
     }
 
@@ -61,6 +67,10 @@ impl DataType for Enumeration {
     fn size(&self) -> usize { self.sum_type.size() }
 
     fn typename(&self) -> String { self.identifier.to_string() }
+
+    fn construct_from_raw(&self, raw: &[u8]) -> TypeResult<ValueCell> {
+        self.sum_type.construct_from_raw(raw)
+    }
 }
 
 impl Identified for Enumeration {

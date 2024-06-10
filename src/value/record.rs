@@ -17,7 +17,7 @@ pub struct ProductValue {
 
 impl ProductValue {
     pub fn new(product: Rc<ProductType>, values: &[ValueCell]) -> TypeResult<Self> {
-        let sequence = product.to_sequence_type();
+        let sequence = product.to_tuple();
         Ok(ProductValue { product, value: Sequence::new(sequence, values)? })
     }
 
@@ -34,6 +34,10 @@ impl ProductValue {
         } else {
             Some(fields[nth].clone())
         }
+    }
+    
+    pub fn from(product: Rc<ProductType>, raw: &[u8]) -> TypeResult<Self> {
+        Ok(ProductValue{ product: product.clone(), value: Sequence::from(product.to_tuple(), raw)? })
     }
 }
 

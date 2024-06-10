@@ -7,6 +7,9 @@
 use std::fmt::{Debug, Display, Formatter};
 use std::rc::Rc;
 
+use crate::value::concept::ValueCell;
+use crate::value::error::TypeResult;
+
 /// A trait for structs that represent a data type.
 pub trait DataType {
     /// The allocation size of an element for this [DataType] at compile time.
@@ -14,6 +17,9 @@ pub trait DataType {
 
     /// The name of this type.
     fn typename(&self) -> String;
+    
+    /// Construct a new ValueCell.
+    fn construct_from_raw(&self, raw: &[u8]) -> TypeResult<ValueCell>;
 }
 
 /// A reference-counted dynamic [DataType].
