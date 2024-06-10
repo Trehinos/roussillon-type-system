@@ -10,6 +10,7 @@ use crate::types::algebraic::{ProductType, SumType};
 use crate::types::concept::DataType;
 use crate::value::concept::ValueCell;
 use crate::value::error::TypeResult;
+use crate::value::record::Record;
 
 /// A [Structure] is an identified [ProductType].
 #[derive(Clone, Debug)]
@@ -35,7 +36,7 @@ impl DataType for Structure {
     fn typename(&self) -> String { self.identifier.to_string() }
 
     fn construct_from_raw(&self, raw: &[u8]) -> TypeResult<ValueCell> {
-        self.product_type.construct_from_raw(raw)
+        Ok(Record::from(self.clone().to_rc(), raw)?.to_cell())
     }
 }
 

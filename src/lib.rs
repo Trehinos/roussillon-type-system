@@ -12,6 +12,7 @@
 //! - [types::primitive::Primitive::Boolean] type of [value::boolean::Boolean],
 //! - [types::primitive::Primitive::Byte] type of [value::byte::Bytes::Byte],
 //! - [types::primitive::Primitive::Bytes] type of :
+//!     - [value::byte::Bytes::Arch],
 //!     - [value::byte::Bytes::Word],
 //!     - [value::byte::Bytes::Quad],
 //!     - [value::byte::Bytes::Long],
@@ -40,7 +41,7 @@
 //! - [types::typedef::Enumeration] type of [value::union::Union],
 //! - [types::typedef::Structure] type of [value::record::Record],
 //!
-//! ### Functional
+//! ## Functional
 //!
 //! - [types::functional::FunctionType] type of [types::functional::FunctionDeclaration] composed in [value::function::FunctionDefinition] with [value::function::FunctionBody].
 
@@ -54,14 +55,13 @@ pub mod value;
 
 #[cfg(test)]
 mod tests {
-    use crate::types::algebraic::{ProductType, SumType};
+    use crate::types::algebraic::{ProductType};
     use crate::types::concept::DataType;
-    use crate::types::functional::FunctionType;
     use crate::types::primitive::Primitive;
-    use crate::types::typedef::{Enumeration, Structure};
+    use crate::types::typedef::Structure;
+    use crate::value::concept::DataValue;
     use crate::value::number::{Float, Integer};
     use crate::value::record::Record;
-    use crate::value::union::Union;
 
     #[test]
     fn test() {
@@ -69,10 +69,10 @@ mod tests {
             Primitive::Integer.to_rc(),
             Primitive::Integer.to_rc(),
             Primitive::Float.to_rc(),
-        ])).to_rc();
+        ]));
         println!("\n{:?}", my_struct);
 
-        let object = Record::new(my_struct.clone(), &[
+        let object = Record::new(my_struct.clone().to_rc(), &[
             Integer::new(40).to_cell(),
             Integer::new(96).to_cell(),
             Float::new(40.0).to_cell()
@@ -83,30 +83,8 @@ mod tests {
             println!("\n{:?}", field.borrow());
         }
 
-        let some_type = Structure::new("Some", ProductType::new(&[my_struct.clone()])).to_rc();
-        let none_type = Structure::new("None", ProductType::unit_type()).to_rc();
-        let option_type = Enumeration::new("Option", SumType::new(&[
-            none_type.clone(),
-            some_type.clone()
-        ])).to_rc();
-
-        let mut union_object = Union::new(option_type, 1, Record::new(
-            some_type.clone(),
-            &[object.clone().to_cell()],
-        ).unwrap().to_cell()).unwrap();
-        println!("\n{:?}", union_object);
-        println!("\n{:?}", union_object.current_value().borrow());
-
-        union_object.set_cell(0, Record::new(none_type, &[]).unwrap().to_cell()).unwrap();
-        println!("\n{:?}", union_object);
-        println!("\n{:?}", union_object.current_value().borrow());
-
-        union_object.set_cell(1, Record::new(some_type, &[object.to_cell()]).unwrap().to_cell()).unwrap();
-        println!("\n{:?}", union_object);
-        println!("\n{:?}", union_object.current_value().borrow());
-
-        let constructor = FunctionType::new(my_struct.product_type.to_tuple(), my_struct);
-        println!("\nConstructor type : {}", constructor.typename())
+        let copy = Structure::construct_from_raw(&my_struct, &object.raw()).unwrap();
+        assert_eq!(object.data_type().typename(), copy.borrow().data_type().typename());
     }
 
 }

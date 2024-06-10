@@ -1,8 +1,9 @@
 use std::cell::RefCell;
 use std::fmt::Debug;
 use std::rc::Rc;
+use crate::parse::{parse_slice, Parsed};
 
-use crate::types::concept::Type;
+use crate::types::concept::{DataType, Type};
 use crate::types::sequence::Tuple;
 use crate::value::concept::{DataValue, ValueCell};
 use crate::value::error::{SequenceError, TypeResult};
@@ -40,7 +41,7 @@ impl Sequence {
         self.values().to_vec()
     }
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
-    
+
     pub fn from(definition: Tuple, raw: &[u8]) -> TypeResult<Self> {
         let mut values = Vec::new();
         let mut start = 0;
@@ -51,6 +52,16 @@ impl Sequence {
             start = end;
         }
         Self::new(definition.clone(), &values)
+    }
+    
+    /// Returns a new [Sequence] from a [Tuple] scheme and raw data.
+    /// 
+    /// ## Panics
+    /// 
+    /// This methods could panic if the call to Self::from() return a [crate::value::error::TypeError].
+    pub fn parse(input: &[u8], definition: Tuple) -> Parsed<Self> {
+        let (Some(raw), rest) = parse_slice(input, definition.size()) else { return (None, input); };
+        (Some(Self::from(definition, raw).unwrap()), rest)
     }
 }
 

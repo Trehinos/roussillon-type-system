@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.1
+
+- 
+
 ## v0.2.0
 
 - Add raw-value based constructors to DataType implementation and all types except for FunctionType.
