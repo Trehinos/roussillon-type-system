@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use std::fmt::{Debug, Formatter};
 use std::rc::Rc;
 
-use crate::types::concept::{DataType, Type};
+use crate::types::concept::Type;
 use crate::types::algebraic::SumType;
 use crate::types::typedef::Enumeration;
 use crate::value::concept::{DataValue, ValueCell};
