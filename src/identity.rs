@@ -1,4 +1,4 @@
-//! A namespaced [Identifier] for named types like [crate::typing::typedef::Enumeration] and [crate::typing::typedef::Structure].
+//! A namespaced [Identifier] for named types like [crate::types::typedef::Enumeration] and [crate::types::typedef::Structure].
 //!
 //! The [Identified] trait helps to get information about the [Identifier] of a type. 
 

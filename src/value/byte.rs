@@ -1,8 +1,9 @@
 use std::cell::RefCell;
 use std::rc::Rc;
+use crate::parse::{parse_slice, Parsed};
 
-use crate::typing::concept::Type;
-use crate::typing::primitive::Primitive;
+use crate::types::concept::Type;
+use crate::types::primitive::Primitive;
 use crate::value::concept::{DataValue, ValueCell};
 
 #[derive(Clone, Debug)]
@@ -17,6 +18,11 @@ pub enum Bytes {
 }
 
 impl Bytes {
+    pub fn parse(input: &[u8], size: usize) -> Parsed<Self> {
+        let (Some(raw), rest) = parse_slice(input, size) else { return (None, input); };
+        (Some(Self::from(raw)), rest)
+    }
+
     pub fn from(raw: &[u8]) -> Self {
         match raw.len() {
             1 => Self::Byte(u8::from_be_bytes(raw.try_into().unwrap())),

@@ -9,54 +9,55 @@
 //! These are the necessary types to construct any other meaningful type.
 //! Usually, these are "machine types" :
 //!
-//! - [typing::primitive::Primitive::Boolean] type of [value::boolean::Boolean],
-//! - [typing::primitive::Primitive::Byte] type of [value::byte::Bytes::Byte],
-//! - [typing::primitive::Primitive::Bytes] type of :
+//! - [types::primitive::Primitive::Boolean] type of [value::boolean::Boolean],
+//! - [types::primitive::Primitive::Byte] type of [value::byte::Bytes::Byte],
+//! - [types::primitive::Primitive::Bytes] type of :
 //!     - [value::byte::Bytes::Word],
 //!     - [value::byte::Bytes::Quad],
 //!     - [value::byte::Bytes::Long],
 //!     - [value::byte::Bytes::Wide], and
 //!     - [value::byte::Bytes::Bytes],
-//! - [typing::primitive::Primitive::Float] type of [value::number::Float],
-//! - [typing::primitive::Primitive::Integer] type of [value::number::Integer],
-//! - [typing::primitive::Primitive::Reference] type of [value::reference::Reference],
-//! - [typing::primitive::Primitive::List] type of [value::list::List],
+//! - [types::primitive::Primitive::Float] type of [value::number::Float],
+//! - [types::primitive::Primitive::Integer] type of [value::number::Integer],
+//! - [types::primitive::Primitive::Reference] type of [value::reference::Reference],
+//! - [types::primitive::Primitive::List] type of [value::list::List],
 //!
 //! ## The "tuple" type
 //!
 //! A sequence of heterogeneous typed values.
 //!
-//! - [typing::sequence::Tuple] type of [value::sequence::Sequence],
+//! - [types::sequence::Tuple] type of [value::sequence::Sequence],
 //!
 //! ## Algebraic Data Types
 //!
-//! - [typing::algebraic::SumType] type of [value::union::SumValue],
-//! - [typing::algebraic::ProductType] type of [value::record::ProductValue],
+//! - [types::algebraic::SumType] type of [value::union::SumValue],
+//! - [types::algebraic::ProductType] type of [value::record::ProductValue],
 //!
 //! ## Custom types
 //!
-//! These types are [identify::Identified] ADTs with [identify::Labelled] fields.
+//! These types are [identity::Identified] ADTs with [identity::Labelled] fields.
 //!
-//! - [typing::typedef::Enumeration] type of [value::union::Union],
-//! - [typing::typedef::Structure] type of [value::record::Record],
+//! - [types::typedef::Enumeration] type of [value::union::Union],
+//! - [types::typedef::Structure] type of [value::record::Record],
 //!
 //! ### Functional
 //!
-//! - [typing::functional::FunctionType] type of [typing::functional::FunctionDeclaration] composed in [value::function::FunctionDefinition] with [value::function::FunctionBody].
+//! - [types::functional::FunctionType] type of [types::functional::FunctionDeclaration] composed in [value::function::FunctionDefinition] with [value::function::FunctionBody].
 
 
-pub mod identify;
-pub mod typing;
+pub mod identity;
+pub mod parse;
+pub mod types;
 pub mod effect;
 pub mod value;
 
 #[cfg(test)]
 mod tests {
-    use crate::typing::algebraic::{ProductType, SumType};
-    use crate::typing::concept::DataType;
-    use crate::typing::functional::FunctionType;
-    use crate::typing::primitive::Primitive;
-    use crate::typing::typedef::{Enumeration, Structure};
+    use crate::types::algebraic::{ProductType, SumType};
+    use crate::types::concept::DataType;
+    use crate::types::functional::FunctionType;
+    use crate::types::primitive::Primitive;
+    use crate::types::typedef::{Enumeration, Structure};
     use crate::value::number::{Float, Integer};
     use crate::value::record::Record;
     use crate::value::union::Union;

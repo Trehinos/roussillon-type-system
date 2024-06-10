@@ -2,8 +2,8 @@ use std::cell::RefCell;
 use std::ops::Index;
 use std::rc::Rc;
 
-use crate::typing::concept::Type;
-use crate::typing::primitive::Primitive;
+use crate::types::concept::Type;
+use crate::types::primitive::Primitive;
 use crate::value::concept::{DataValue, ValueCell};
 use crate::value::error::CanTypeError;
 use crate::value::sequence::values_to_raw;

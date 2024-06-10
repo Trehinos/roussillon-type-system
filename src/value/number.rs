@@ -1,8 +1,9 @@
 use std::cell::RefCell;
 use std::rc::Rc;
+use crate::parse::{parse_slice, Parsed};
 
-use crate::typing::concept::Type;
-use crate::typing::primitive::Primitive;
+use crate::types::concept::Type;
+use crate::types::primitive::Primitive;
 use crate::value::concept::{DataValue, ValueCell};
 
 #[derive(Copy, Clone, Debug)]
@@ -15,8 +16,13 @@ impl Float {
         self.0
     }
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
-    
+
     pub fn from(raw: &[u8]) -> Self { Self::new(f64::from_be_bytes(raw.try_into().unwrap_or_default())) }
+
+    pub fn parse_float(input: &[u8]) -> Parsed<Self> {
+        let (Some(raw), rest) = parse_slice(input, 8) else { return (None, input); };
+        (Some(Self::from(raw)), rest)
+    }
 }
 
 impl DataValue for Float {
@@ -46,6 +52,10 @@ impl Integer {
 
     pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
     pub fn from(raw: &[u8]) -> Self { Self::new(i64::from_be_bytes(raw.try_into().unwrap_or_default())) }
+    pub fn parse(input: &[u8]) -> Parsed<Self> {
+        let (Some(raw), rest) = parse_slice(input, 8) else { return (None, input); };
+        (Some(Self::from(raw)), rest)
+    }
 }
 
 impl DataValue for Integer {

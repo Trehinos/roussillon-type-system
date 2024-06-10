@@ -7,10 +7,10 @@ use std::cmp::max;
 use std::ops::{Add, Mul};
 use std::rc::Rc;
 
-use crate::typing::concept::{DataType, Type};
+use crate::types::concept::{DataType, Type};
 
-use crate::typing::sequence;
-use crate::typing::sequence::Tuple;
+use crate::types::sequence;
+use crate::types::sequence::Tuple;
 
 /// This struct describes a type which can have a value of one of its variant.
 #[derive(Clone, Debug)]

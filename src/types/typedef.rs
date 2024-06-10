@@ -5,9 +5,9 @@
 //! - [Enumeration] is an [Identified] : [SumType],
 
 use std::rc::Rc;
-use crate::identify::{Identified, Identifier};
-use crate::typing::algebraic::{ProductType, SumType};
-use crate::typing::concept::DataType;
+use crate::identity::{Identified, Identifier};
+use crate::types::algebraic::{ProductType, SumType};
+use crate::types::concept::DataType;
 
 /// A [Structure] is an identified [ProductType].
 #[derive(Clone, Debug)]

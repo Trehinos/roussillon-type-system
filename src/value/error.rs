@@ -1,4 +1,4 @@
-use crate::typing::concept::Type;
+use crate::types::concept::Type;
 
 #[derive(Clone, Debug)]
 pub enum SumTypeError {

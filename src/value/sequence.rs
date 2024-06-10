@@ -2,8 +2,8 @@ use std::cell::RefCell;
 use std::fmt::Debug;
 use std::rc::Rc;
 
-use crate::typing::concept::Type;
-use crate::typing::sequence::Tuple;
+use crate::types::concept::Type;
+use crate::types::sequence::Tuple;
 use crate::value::concept::{DataValue, ValueCell};
 use crate::value::error::{SequenceError, TypeResult};
 

@@ -1,8 +1,9 @@
 use std::cell::RefCell;
 use std::rc::Rc;
+use crate::parse::{parse_slice, Parsed};
 
-use crate::typing::concept::Type;
-use crate::typing::primitive::Primitive;
+use crate::types::concept::Type;
+use crate::types::primitive::Primitive;
 use crate::value::concept::{DataValue, ValueCell};
 
 #[derive(Clone, Debug)]
@@ -23,6 +24,11 @@ impl Boolean {
         } else {
             panic!("Unable to create a Boolean from empty data.")
         }
+    }
+
+    pub fn parse(input: &[u8]) -> Parsed<Self> {
+        let (Some(raw), rest) = parse_slice(input, 1) else { return (None, input); };
+        (Some(Self::from(raw)), rest)
     }
 }
 

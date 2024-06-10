@@ -8,7 +8,7 @@
 //! - [Primitive::List]
 
 use std::rc::Rc;
-use crate::typing::concept::{DataType, Type};
+use crate::types::concept::{DataType, Type};
 
 pub type List = (Type, usize);
 

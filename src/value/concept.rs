@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use std::fmt::{Debug, Formatter};
 use std::rc::Rc;
 
-use crate::typing::concept::Type;
+use crate::types::concept::Type;
 use crate::value::error::{CanTypeError, TypeError};
 
 pub trait DataValue {

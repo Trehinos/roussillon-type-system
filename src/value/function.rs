@@ -1,4 +1,4 @@
-use crate::typing::functional::FunctionDeclaration;
+use crate::types::functional::FunctionDeclaration;
 use crate::value::concept::ValueCell;
 use crate::value::sequence::Sequence;
 

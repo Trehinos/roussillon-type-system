@@ -1,4 +1,4 @@
-//! This module provides a typing feature.
+//! This module provides a types feature.
 //!
 //! All types implement the [concept::DataType] trait.
 //!
@@ -20,9 +20,9 @@
 //! 
 //! Create a "MyStruct" [typedef::Structure] with 3 fields :
 //! ```
-//! use roussillon_type_system::typing::primitive::Primitive;
-//! use roussillon_type_system::typing::algebraic::ProductType;
-//! use roussillon_type_system::typing::typedef::Structure;
+//! use roussillon_type_system::types::primitive::Primitive;
+//! use roussillon_type_system::types::algebraic::ProductType;
+//! use roussillon_type_system::types::typedef::Structure;
 //!
 //! let my_struct = Structure::new("MyStruct", ProductType::new(&[
 //!     Primitive::Integer.to_rc(),

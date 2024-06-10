@@ -2,9 +2,9 @@ use std::cell::RefCell;
 use std::fmt::{Debug, Formatter};
 use std::rc::Rc;
 
-use crate::typing::concept::Type;
-use crate::typing::algebraic::SumType;
-use crate::typing::typedef::Enumeration;
+use crate::types::concept::Type;
+use crate::types::algebraic::SumType;
+use crate::types::typedef::Enumeration;
 use crate::value::concept::{DataValue, ValueCell};
 use crate::value::error::{CanTypeError, SumTypeError, TypeResult};
 

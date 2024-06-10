@@ -1,8 +1,8 @@
 //! This module defines the [Tuple] alias to Vec<[Type]>.
 //! 
-//! This type is used in any "type collection" like [crate::typing::algebraic::SumType] and [crate::typing::algebraic::ProductType].
+//! This type is used in any "type collection" like [crate::types::algebraic::SumType] and [crate::types::algebraic::ProductType].
 
-use crate::typing::concept::{DataType, Type};
+use crate::types::concept::{DataType, Type};
 
 pub type Tuple = Vec<Type>;
 

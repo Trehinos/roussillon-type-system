@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
-use crate::identify::Identifier;
-use crate::typing::concept::{DataType, Type};
-use crate::typing::sequence::{join, Tuple};
+use crate::identity::Identifier;
+use crate::types::concept::{DataType, Type};
+use crate::types::sequence::{join, Tuple};
 
 #[derive(Clone, Debug)]
 pub struct FunctionType {

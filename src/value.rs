@@ -1,4 +1,4 @@
-//! All values corresponding types in the module [crate::typing].
+//! All values corresponding types in the module [crate::types].
 //! 
 //! - [byte::Bytes::Byte]
 //! - [byte::Bytes::Arch]

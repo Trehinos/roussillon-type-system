@@ -1,9 +1,9 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use crate::typing::concept::Type;
-use crate::typing::algebraic::ProductType;
-use crate::typing::typedef::Structure;
+use crate::types::concept::Type;
+use crate::types::algebraic::ProductType;
+use crate::types::typedef::Structure;
 
 use crate::value::concept::{DataValue, ValueCell};
 use crate::value::error::TypeResult;
