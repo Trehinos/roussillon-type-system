@@ -35,9 +35,11 @@ impl ProductValue {
             Some(fields[nth].clone())
         }
     }
-    
+
+    pub fn to_cell(self) -> ValueCell { Rc::new(RefCell::new(self)) }
+
     pub fn from(product: Rc<ProductType>, raw: &[u8]) -> TypeResult<Self> {
-        Ok(ProductValue{ product: product.clone(), value: Sequence::from(product.to_tuple(), raw)? })
+        Ok(ProductValue { product: product.clone(), value: Sequence::from(product.to_tuple(), raw)? })
     }
 }
 
@@ -74,6 +76,16 @@ impl Record {
     pub fn as_sequence(&self) -> &Sequence { self.value.as_sequence() }
 
     pub fn get_field(&self, field: usize) -> Option<ValueCell> { self.value.get_element(field) }
+
+    pub fn from(structure_type: Rc<Structure>, raw: &[u8]) -> TypeResult<Self> {
+        let product = structure_type.product_type.clone().to_rc();
+        Ok(
+            Self {
+                of_type: structure_type,
+                value: ProductValue::from(product, raw)?
+            }
+        )
+    }
 }
 
 impl DataValue for Record {

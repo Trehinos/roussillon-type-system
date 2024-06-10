@@ -4,6 +4,7 @@
 
 - Add raw-value based constructors to DataType implementation and all types except for FunctionType.
 - Add method 'from' in List, Sequence, ProductValue, SumValue, Record and Union.
+- Add method 'to_cell' in ProductValue and Record.
 
 ## v0.1.5
 
@@ -35,6 +36,7 @@ Initial release :
 - Boolean
 - Bytes (arbitrarily size)
     - Byte (8 bits)
+    - Arch (usize)
     - Word (16)
     - Quad (32)
     - Long (64)

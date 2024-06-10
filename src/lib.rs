@@ -46,8 +46,9 @@
 
 
 pub mod identity;
-pub mod parse;
+mod parse;
 pub mod types;
+#[cfg(feature = "effects")]
 pub mod effect;
 pub mod value;
 
@@ -77,33 +78,30 @@ mod tests {
             Float::new(40.0).to_cell()
         ]).unwrap();
         println!("\n{:?}", object.clone().to_cell().borrow());
-
-
-        let x = 3 + 3;
         for i in 0..3 {
             let field = object.get_field(i).unwrap();
             println!("\n{:?}", field.borrow());
         }
 
-        let some = Structure::new("Some", ProductType::new(&[my_struct.clone()])).to_rc();
-        let none = Structure::new("None", ProductType::unit_type()).to_rc();
-        let option_class = Enumeration::new("Option", SumType::new(&[
-            none.clone(),
-            some.clone()
+        let some_type = Structure::new("Some", ProductType::new(&[my_struct.clone()])).to_rc();
+        let none_type = Structure::new("None", ProductType::unit_type()).to_rc();
+        let option_type = Enumeration::new("Option", SumType::new(&[
+            none_type.clone(),
+            some_type.clone()
         ])).to_rc();
 
-        let mut union_object = Union::new(option_class, 1, Record::new(
-            some.clone(),
+        let mut union_object = Union::new(option_type, 1, Record::new(
+            some_type.clone(),
             &[object.clone().to_cell()],
         ).unwrap().to_cell()).unwrap();
         println!("\n{:?}", union_object);
         println!("\n{:?}", union_object.current_value().borrow());
 
-        union_object.set_cell(0, Record::new(none, &[]).unwrap().to_cell()).unwrap();
+        union_object.set_cell(0, Record::new(none_type, &[]).unwrap().to_cell()).unwrap();
         println!("\n{:?}", union_object);
         println!("\n{:?}", union_object.current_value().borrow());
 
-        union_object.set_cell(1, Record::new(some, &[object.to_cell()]).unwrap().to_cell()).unwrap();
+        union_object.set_cell(1, Record::new(some_type, &[object.to_cell()]).unwrap().to_cell()).unwrap();
         println!("\n{:?}", union_object);
         println!("\n{:?}", union_object.current_value().borrow());
 
