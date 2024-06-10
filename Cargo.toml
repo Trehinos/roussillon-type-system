@@ -1,9 +1,11 @@
 [package]
 name = "roussillon-type-system"
 description = "A type system for a programming language"
-version = "0.2.1"
+version = "0.2.2-dev"
 edition = "2021"
 license = "MIT"
+keywords = ["type-system", "types"]
+categories = ["data-structures"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

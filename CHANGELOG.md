@@ -1,8 +1,13 @@
 # Changelog
 
+## v0.2.2
+
+- (todo) Manage functions
+- Update cargo.toml
+
 ## v0.2.1
 
-- 
+- Fix construct_from_rax in Structure
 
 ## v0.2.0
 
