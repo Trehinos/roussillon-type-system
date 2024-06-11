@@ -51,3 +51,4 @@ pub mod sequence;
 pub mod algebraic;
 pub mod typedef;
 pub mod functional;
+mod interface;

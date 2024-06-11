@@ -7,7 +7,7 @@
 
 ## v0.2.1
 
-- Fix construct_from_rax in Structure
+- Fix construct_from_raw in Structure
 
 ## v0.2.0
 
