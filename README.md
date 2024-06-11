@@ -1,11 +1,6 @@
 # Roussillon : Type System
 
-> **This crate is an incomplete library** with a clear goal of creating a new language.  
-> *Feel free to use it if needed. It is usable as is.*
->
-> In future versions, this crate may provide new types or new features on values.
->
-> When applicable, it will stay as uncorrelated as possible to the language.
+> **This crate is an incomplete library** with a clear goal of helping create a programming language.
 
 This crate provides some structs and traits to manage types and typed values.
 
