@@ -1,9 +1,14 @@
 # Changelog
 
+## v0.2.3
+
+- 
+
 ## v0.2.2
 
-- (todo) Manage functions
 - Update cargo.toml
+- (started) Interface and Traits
+- (todo) Manage functions
 
 ## v0.2.1
 
