@@ -2,7 +2,8 @@
 
 ## v0.2.3
 
-- 
+- create_struct()
+- copy()
 
 ## v0.2.2
 

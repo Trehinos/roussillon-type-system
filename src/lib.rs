@@ -57,7 +57,7 @@ pub mod value;
 mod tests {
     use crate::types::concept::DataType;
     use crate::types::primitive::Primitive;
-    use crate::types::typedef::{create_struct, Structure};
+    use crate::types::typedef::{create_struct};
     use crate::value::concept::DataValue;
     use crate::value::number::{Float, Integer};
     use crate::value::operations::copy;
