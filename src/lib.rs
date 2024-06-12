@@ -55,24 +55,24 @@ pub mod value;
 
 #[cfg(test)]
 mod tests {
-    use crate::types::algebraic::{ProductType};
     use crate::types::concept::DataType;
     use crate::types::primitive::Primitive;
-    use crate::types::typedef::Structure;
+    use crate::types::typedef::{create_struct, Structure};
     use crate::value::concept::DataValue;
     use crate::value::number::{Float, Integer};
+    use crate::value::operations::copy;
     use crate::value::record::Record;
 
     #[test]
     fn test() {
-        let my_struct = Structure::new("MyStruct", ProductType::new(&[
+        let my_struct = create_struct("MyStruct", &[
             Primitive::Integer.to_rc(),
             Primitive::Integer.to_rc(),
             Primitive::Float.to_rc(),
-        ]));
-        println!("\n{:?}", my_struct);
+        ]);
+        println!("\n{:?}", my_struct.as_ref());
 
-        let object = Record::new(my_struct.clone().to_rc(), &[
+        let object = Record::new(my_struct.clone(), &[
             Integer::new(40).to_cell(),
             Integer::new(96).to_cell(),
             Float::new(40.0).to_cell()
@@ -83,7 +83,7 @@ mod tests {
             println!("\n{:?}", field.borrow());
         }
 
-        let copy = Structure::construct_from_raw(&my_struct, &object.raw()).unwrap();
+        let copy = copy(my_struct.clone(), &object.clone().to_cell()).unwrap();
         assert_eq!(object.data_type().typename(), copy.borrow().data_type().typename());
     }
 

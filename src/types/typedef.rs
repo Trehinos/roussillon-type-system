@@ -7,7 +7,8 @@
 use std::rc::Rc;
 use crate::identity::{Identified, Identifier};
 use crate::types::algebraic::{ProductType, SumType};
-use crate::types::concept::DataType;
+use crate::types::concept::{DataType, Type};
+use crate::types::primitive::Primitive;
 use crate::value::concept::ValueCell;
 use crate::value::error::TypeResult;
 use crate::value::record::Record;
@@ -78,4 +79,8 @@ impl Identified for Enumeration {
     fn identifier(&self) -> Identifier {
         self.identifier.clone()
     }
+}
+
+pub fn create_struct(identifier: &str, members: &[Type]) -> Rc<Structure> {
+    Structure::new(identifier, ProductType::new(members)).to_rc()
 }
