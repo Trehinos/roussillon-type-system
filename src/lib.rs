@@ -52,15 +52,15 @@ pub mod types;
 #[cfg(feature = "effects")]
 pub mod effect;
 pub mod value;
+pub mod factory;
 
 #[cfg(test)]
 mod tests {
     use crate::types::concept::DataType;
     use crate::types::primitive::Primitive;
-    use crate::types::typedef::{create_struct};
     use crate::value::concept::DataValue;
     use crate::value::number::{Float, Integer};
-    use crate::value::operations::copy;
+    use crate::factory::{copy_value, create_struct};
     use crate::value::record::Record;
 
     #[test]
@@ -83,7 +83,7 @@ mod tests {
             println!("\n{:?}", field.borrow());
         }
 
-        let copy = copy(my_struct.clone(), &object.clone().to_cell()).unwrap();
+        let copy = copy_value(my_struct.clone(), &object.clone().to_cell()).unwrap();
         assert_eq!(object.data_type().typename(), copy.borrow().data_type().typename());
     }
 

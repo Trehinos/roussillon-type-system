@@ -80,7 +80,3 @@ impl Identified for Enumeration {
         self.identifier.clone()
     }
 }
-
-pub fn create_struct(identifier: &str, members: &[Type]) -> Rc<Structure> {
-    Structure::new(identifier, ProductType::new(members)).to_rc()
-}
