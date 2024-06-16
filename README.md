@@ -8,7 +8,7 @@ This crate goal **IS NOT** to manage memory allocation.
 
 ## Type system
 
-### Typing module
+### Types module
 
 This module offers a way to mark some data with a type.
 
@@ -45,7 +45,7 @@ Usually, these are "machine types" :
 
 ### Value module
 
-The **value** module provides ways to create values from all types in the **typing** module.
+The **value** module provides ways to create values from all types in the **types** module.
 
 The provided constructible values are :
 
