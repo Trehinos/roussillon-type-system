@@ -15,35 +15,42 @@
 //! - [typedef::Structure]
 //! - [typedef::Enumeration]
 //! - [functional::FunctionType]
-//! 
+//!
 //! ## Example
-//! 
+//!
 //! Create a "MyStruct" [typedef::Structure] with 3 fields :
 //! ```
+//! use roussillon_type_system::factory::create_struct;
+//! use roussillon_type_system::identity::LabelBank;
 //! use roussillon_type_system::types::primitive::Primitive;
-//! use roussillon_type_system::types::algebraic::ProductType;
-//! use roussillon_type_system::types::typedef::Structure;
 //!
-//! let my_struct = Structure::new("MyStruct", ProductType::new(&[
+//! let my_struct = create_struct("MyStruct", LabelBank::from(&[
+//!     "field_a",
+//!     "field_b",
+//!     "field_c",
+//! ]), &[
 //!     Primitive::Integer.to_rc(),
 //!     Primitive::Integer.to_rc(),
 //!     Primitive::Float.to_rc(),
-//! ])).to_rc();
+//! ]);
 //! ```
-//! 
+//!
 //! This program creates the following my_struct object : 
 //! ```-
 //! Structure {
 //!     identifier: Identifier {
 //!         space: "",
 //!         name: "MyStruct"
-//!     },
+//!     }, 
+//!     labels: LabelBank({
+//!         Label("field_a"): 0,
+//!         Label("field_b"): 1,
+//!         Label("field_c"): 2}
+//!     ),
 //!     product_type: ProductType([<integer>, <integer>, <float>])
 //! }
 //! ```
-//! 
-//! 
-//! 
+//!
 
 pub mod concept;
 pub mod primitive;

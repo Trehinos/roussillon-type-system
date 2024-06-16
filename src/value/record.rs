@@ -1,5 +1,6 @@
 use std::cell::RefCell;
 use std::rc::Rc;
+use crate::identity::{Label, Labelled};
 
 use crate::types::concept::Type;
 use crate::types::algebraic::ProductType;
@@ -8,6 +9,7 @@ use crate::types::typedef::Structure;
 use crate::value::concept::{DataValue, ValueCell};
 use crate::value::error::TypeResult;
 use crate::value::sequence::Sequence;
+use crate::value::union::Union;
 
 #[derive(Clone, Debug)]
 pub struct ProductValue {
@@ -95,5 +97,11 @@ impl DataValue for Record {
 
     fn set(&mut self, raw: &[u8]) {
         self.value.set(raw);
+    }
+}
+
+impl Labelled<ValueCell> for Record {
+    fn labelled(&self, label: &Label) -> Option<ValueCell> {
+        self.get_field(self.of_type.labels.labelled(label)?)
     }
 }

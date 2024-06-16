@@ -59,6 +59,7 @@ impl ProductType {
     pub fn new(types: &[Type]) -> Self { Self(types.to_vec()) }
     pub fn to_tuple(&self) -> Tuple { self.0.to_vec() }
     pub fn is_unit_type(&self) -> bool { self.0.is_empty() }
+    pub fn field(&self, index: usize) -> Option<Type> { self.0.get(index).cloned() }
     pub fn to_rc(self) -> Rc<Self> { Rc::new(self) }
 }
 

@@ -61,11 +61,16 @@ mod tests {
     use crate::value::concept::DataValue;
     use crate::value::number::{Float, Integer};
     use crate::factory::{copy_value, create_struct};
+    use crate::identity::LabelBank;
     use crate::value::record::Record;
 
     #[test]
     fn test() {
-        let my_struct = create_struct("MyStruct", &[
+        let my_struct = create_struct("MyStruct", LabelBank::from(&[
+            "field_a",
+            "field_b",
+            "field_c",
+        ]), &[
             Primitive::Integer.to_rc(),
             Primitive::Integer.to_rc(),
             Primitive::Float.to_rc(),
@@ -86,5 +91,4 @@ mod tests {
         let copy = copy_value(my_struct.clone(), &object.clone().to_cell()).unwrap();
         assert_eq!(object.data_type().typename(), copy.borrow().data_type().typename());
     }
-
 }

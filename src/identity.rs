@@ -2,7 +2,9 @@
 //!
 //! The [Identified] trait helps to get information about the [Identifier] of a type. 
 
+use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
+use std::hash::{Hash, Hasher};
 
 /// An identifier with a namespace.
 #[derive(Clone, Eq, PartialEq, Debug)]
@@ -62,6 +64,28 @@ impl Display for Label {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result { write!(f, "{}", self.0) }
 }
 
-pub trait Labelled {
-    fn label(&self) -> Label;
+impl Hash for Label {
+    fn hash<H: Hasher>(&self, state: &mut H) { state.write(self.0.as_bytes()) }
+}
+
+pub trait Labelled<T> {
+    fn labelled(&self, label: &Label) -> Option<T>;
+}
+
+#[derive(Clone, Debug)]
+pub struct LabelBank(HashMap<Label, usize>);
+
+impl LabelBank {
+    pub fn from(labels: &[&str]) -> Self {
+        let mut label_bank = HashMap::new();
+        for (index, label) in labels.iter().enumerate() {
+            label_bank.insert(Label::new(label), index);
+        }
+        Self(label_bank)
+    }
+}
+
+impl Labelled<usize> for LabelBank {
+
+    fn labelled(&self, label: &Label) -> Option<usize> { self.0.get(label).cloned() }
 }

@@ -5,10 +5,9 @@
 //! - [Enumeration] is an [Identified] : [SumType],
 
 use std::rc::Rc;
-use crate::identity::{Identified, Identifier};
+use crate::identity::{Identified, Identifier, Label, LabelBank, Labelled};
 use crate::types::algebraic::{ProductType, SumType};
 use crate::types::concept::{DataType, Type};
-use crate::types::primitive::Primitive;
 use crate::value::concept::ValueCell;
 use crate::value::error::TypeResult;
 use crate::value::record::Record;
@@ -17,13 +16,15 @@ use crate::value::record::Record;
 #[derive(Clone, Debug)]
 pub struct Structure {
     identifier: Identifier,
+    pub labels: LabelBank,
     pub product_type: ProductType,
 }
 
 impl Structure {
-    pub fn new(identifier: &str, fields: ProductType) -> Self {
+    pub fn new(identifier: &str, labels: LabelBank, fields: ProductType) -> Self {
         Structure {
             identifier: Identifier::new(identifier),
+            labels,
             product_type: fields,
         }
     }
@@ -47,20 +48,27 @@ impl Identified for Structure {
     }
 }
 
+impl Labelled<Type> for Structure {
+    fn labelled(&self, label: &Label) -> Option<Type> { self.product_type.field(self.labels.labelled(label)?) }
+}
+
 /// A [Enumeration] is an identified [SumType].
 #[derive(Clone, Debug)]
 pub struct Enumeration {
     identifier: Identifier,
+    labels: LabelBank,
     pub sum_type: SumType,
 }
 
 impl Enumeration {
-    pub fn new(identifier: &str, sum_type: SumType) -> Self {
+    pub fn new(identifier: &str, labels: LabelBank, sum_type: SumType) -> Self {
         Enumeration {
             identifier: Identifier::new(identifier),
+            labels,
             sum_type,
         }
     }
+    pub fn variant(&self, tag: usize) -> Option<Type> { self.sum_type.variant(tag) }
 
     pub fn to_rc(self) -> Rc<Self> { Rc::new(self) }
 }
@@ -79,4 +87,8 @@ impl Identified for Enumeration {
     fn identifier(&self) -> Identifier {
         self.identifier.clone()
     }
+}
+
+impl Labelled<Type> for Enumeration {
+    fn labelled(&self, label: &Label) -> Option<Type> { self.variant(self.labels.labelled(label)?) }
 }

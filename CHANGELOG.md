@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.3.0
+
+- Complete Label and Labelled features,
+- Add LabelBank,
+- Add Label<Type> for Enumeration and Structure types,
+- Add Label<ValueCell> for Record.
+
 ## v0.2.3
 
 - create_struct()
