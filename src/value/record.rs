@@ -79,12 +79,14 @@ impl Record {
 
     pub fn get_field(&self, field: usize) -> Option<ValueCell> { self.value.get_element(field) }
 
+    pub fn field_from_name(&self, field: &str) -> Option<ValueCell> { self.labelled(&Label::new(field)) }
+
     pub fn from(structure_type: Rc<Structure>, raw: &[u8]) -> TypeResult<Self> {
         let product = structure_type.product_type.clone().to_rc();
         Ok(
             Self {
                 of_type: structure_type,
-                value: ProductValue::from(product, raw)?
+                value: ProductValue::from(product, raw)?,
             }
         )
     }
