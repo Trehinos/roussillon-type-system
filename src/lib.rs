@@ -49,7 +49,7 @@
 pub mod identity;
 mod parse;
 pub mod types;
-#[cfg(feature = "effects")]
+//#[cfg(feature = "effects")]
 pub mod effect;
 pub mod value;
 pub mod factory;

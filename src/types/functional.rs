@@ -1,4 +1,5 @@
 use std::rc::Rc;
+use crate::effect::EffectType;
 
 use crate::identity::Identifier;
 use crate::types::concept::{DataType, Type};
@@ -10,10 +11,11 @@ use crate::value::error::TypeResult;
 pub struct FunctionType {
     pub arguments: Tuple,
     pub return_type: Type,
+    pub effects: Vec<EffectType>,
 }
 
 impl FunctionType {
-    pub fn new(arguments: Tuple, return_type: Type) -> Self { Self { arguments, return_type } }
+    pub fn new(arguments: Tuple, return_type: Type, effects: &[EffectType]) -> Self { Self { arguments, return_type, effects: effects.to_vec() } }
     pub fn to_rc(self) -> Rc<Self> { Rc::new(self) }
 }
 
