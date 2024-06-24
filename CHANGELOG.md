@@ -1,22 +1,28 @@
 # Changelog
 
+## v0.3.1
+
+- Add Record::field_from_name().
+- Modified : module "typing" renamed to "types".
+- (experimental) Interface, functions, effects.
+
 ## v0.3.0
 
-- Complete Label and Labelled features,
-- Add LabelBank,
-- Add Label<Type> for Enumeration and Structure types,
+- Complete Label and Labelled features.
+- Add LabelBank.
+- Add Label<Type> for Enumeration and Structure types.
 - Add Label<ValueCell> for Record.
 
 ## v0.2.3
 
-- create_struct()
-- copy()
+- create_struct().
+- copy().
 
 ## v0.2.2
 
-- Update cargo.toml
-- (started) Interface and Traits
-- (todo) Manage functions
+- Update cargo.toml.
+- (started) Interface and Traits.
+- (todo) Manage functions.
 
 ## v0.2.1
 
