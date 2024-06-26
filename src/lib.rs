@@ -56,6 +56,7 @@ pub mod factory;
 
 #[cfg(test)]
 mod tests {
+    use crate::effect::{EffectLifetime, EffectType};
     use crate::types::concept::DataType;
     use crate::types::primitive::Primitive;
     use crate::value::concept::DataValue;
@@ -63,6 +64,16 @@ mod tests {
     use crate::factory::{copy_value, create_struct};
     use crate::identity::LabelBank;
     use crate::value::record::Record;
+
+    #[test]
+    fn test_effect() {
+        let mut_effect = EffectType::new(EffectLifetime::Global, "mut");
+        let io_effect = EffectType::new(EffectLifetime::Global, "io");
+        let alloc_effect = EffectType::new(EffectLifetime::Global, "alloc");
+        let mut_io = mut_effect.merge(&io_effect);
+        let mut_io = mut_io.merge(&alloc_effect);
+        println!("{}", mut_io);
+    }
 
     #[test]
     fn test() {
