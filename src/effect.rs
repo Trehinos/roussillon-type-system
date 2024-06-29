@@ -1,77 +1,66 @@
-use std::fmt::{Display, Formatter};
+
 use std::rc::Rc;
+use crate::types::concept::Type;
 
-pub trait ToRc where Self: Sized {
-    fn to_rc(self) -> Rc<Self> {
-        Rc::new(self)
+pub struct KindSignature {
+    pub from: Option<Kind>,
+    pub to: Kind,
+}
+
+impl KindSignature {
+    pub fn signature(&self) -> String {
+        let mut str = String::new();
+        if let Some(kind) = &self.from {
+            
+        }
+        todo!()
     }
 }
 
-#[derive(Clone, Debug)]
-pub enum EffectKind {
-    Definition(String),
-    Link(Rc<EffectKind>),
-    Product(Vec<Rc<EffectKind>>),
+pub trait Effect {
+    fn kind(&self) -> KindSignature;
+    fn signature(&self) -> String;
 }
 
-impl Display for EffectKind {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}",
-               match self {
-                   EffectKind::Definition(s) => s.to_string(),
-                   EffectKind::Link(l) => l.to_string(),
-                   EffectKind::Product(p) => p.iter().map(|k| k.to_string()).collect::<Vec<_>>().join("*"),
-               }
-        )
-    }
+pub enum EffectRows {
+    Diverge,
+    Except,
+    Effect(Rc<dyn Effect>),
 }
 
-impl ToRc for EffectKind {}
+pub type Handler = fn(EffectRows, Type) -> Type;
 
-impl EffectKind {
-    pub fn to_link(self) -> Rc<Self> { self.to_rc() }
+pub enum Kind {
+    ValueType(Type),
+    Rows(EffectRows),
+    Atomic(Rc<dyn Effect>),
+    HeapType(Type),
+    Handler(Handler),
+    Predicate(bool),
+    Scoped(Rc<Kind>),
+}
 
-    pub fn merge(&self, other: &Self) -> Self {
-        match (self, other) {
-            (EffectKind::Definition(s1), EffectKind::Definition(s2)) => {
-                if s1 == s2 {
-                    self.clone()
-                } else {
-                    EffectKind::Product(vec![Rc::new(self.clone()), Rc::new(other.clone())])
-                }
-            }
-            _ => EffectKind::Product(vec![Rc::new(self.clone()), Rc::new(other.clone())]),
+impl Kind {
+    pub fn signature(&self) -> String {
+        match self {
+            Kind::ValueType(t) => t.signature(),
+            Kind::Rows(rows) => rows.signature(),
+            Kind::Atomic(e) => e.signature(),
+            Kind::HeapType(t) => t.signature(),
+            Kind::Handler(h) => h.signature(),
+            Kind::Predicate(b) => b.to_string(),
+            Kind::Scoped(s) => s,
         }
     }
 }
 
-#[derive(Clone, Debug)]
-pub enum EffectLifetime {
-    Global,
-    WithinScope,
-    FollowReturnValue,
-}
-
-#[derive(Clone, Debug)]
-pub struct EffectType {
-    pub lifetime: EffectLifetime,
-    pub kind: EffectKind,
-}
-
-impl EffectType {
-    pub fn name(&self) -> String { format!("<|{}|>", self.kind) }
-    pub fn new(lifetime: EffectLifetime, from: &str) -> Self { Self { lifetime, kind: EffectKind::Definition(from.to_string()) } }
-    pub fn link(lifetime: EffectLifetime, from: Rc<EffectKind>) -> Self { Self { lifetime, kind: EffectKind::Link(from) } }
-    pub fn product(lifetime: EffectLifetime, from: &[Rc<EffectKind>]) -> Self { Self { lifetime, kind: EffectKind::Product(from.to_vec()) } }
-
-    pub fn merge(&self, other: &Self) -> Self {
-        Self {
-            lifetime: self.lifetime.clone(),
-            kind: self.kind.merge(&other.kind),
-        }
+pub struct EffectTotal;
+impl Effect for EffectTotal {
+    fn kind(&self) -> KindSignature {
+        todo!()
     }
-}
 
-impl Display for EffectType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result { write!(f, "{}", self.name()) }
+    fn signature(&self) -> String {
+        todo!()
+    }
 }

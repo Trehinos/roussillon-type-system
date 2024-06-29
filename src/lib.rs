@@ -68,11 +68,9 @@ mod tests {
     #[test]
     fn test_effect() {
         let mut_effect = EffectType::new(EffectLifetime::Global, "mut");
-        let io_effect = EffectType::new(EffectLifetime::Global, "io");
-        let alloc_effect = EffectType::new(EffectLifetime::Global, "alloc");
-        let mut_io = mut_effect.merge(&io_effect);
-        let mut_io = mut_io.merge(&alloc_effect);
-        println!("{}", mut_io);
+        let except_effect = EffectType::new(EffectLifetime::Global, "except");
+        let diverge_effect = EffectType::new(EffectLifetime::Global, "diverge");
+        let write_effect = EffectType::new(EffectLifetime::Global, "write");
     }
 
     #[test]
