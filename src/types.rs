@@ -20,7 +20,7 @@
 //!
 //! Create a "MyStruct" [typedef::Structure] with 3 fields :
 //! ```
-//! use roussillon_type_system::factory::create_struct;
+//! use roussillon_type_system::facade::create_struct;
 //! use roussillon_type_system::identity::LabelBank;
 //! use roussillon_type_system::types::primitive::Primitive;
 //!

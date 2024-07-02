@@ -61,7 +61,7 @@ pub mod types;
 #[cfg(feature = "experiments")]
 pub mod effect;
 pub mod value;
-pub mod factory;
+pub mod facade;
 
 #[cfg(test)]
 mod test {
@@ -69,7 +69,7 @@ mod test {
     use crate::types::primitive::Primitive;
     use crate::value::concept::DataValue;
     use crate::value::number::{Float, Integer};
-    use crate::factory::{copy_value, create_struct};
+    use crate::facade::{copy_value, create_struct};
     use crate::identity::LabelBank;
     use crate::value::record::Record;
 
