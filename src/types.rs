@@ -58,6 +58,9 @@ pub mod sequence;
 pub mod algebraic;
 pub mod typedef;
 pub mod functional;
+#[cfg(feature = "experiments")]
 pub mod dynamic;
-mod interface;
-mod heap;
+#[cfg(feature = "experiments")]
+pub mod interface;
+#[cfg(feature = "experiments")]
+pub mod heap;

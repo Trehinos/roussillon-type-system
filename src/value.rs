@@ -28,4 +28,5 @@ pub mod list;
 pub mod union;
 pub mod record;
 pub mod function;
+#[cfg(feature = "experiments")]
 pub mod value_type;
