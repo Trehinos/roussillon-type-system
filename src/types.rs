@@ -60,3 +60,4 @@ pub mod typedef;
 pub mod functional;
 pub mod dynamic;
 mod interface;
+mod heap;

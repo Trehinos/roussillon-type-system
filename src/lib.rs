@@ -44,6 +44,15 @@
 //! ## Functional
 //!
 //! - [types::functional::FunctionType] type of [types::functional::FunctionDeclaration] composed in [value::function::FunctionDefinition] with [value::function::FunctionBody].
+//!
+//! ## Experimental types
+//!
+//! > These types are experimental and should not be used yet.
+//!
+//! - [types::dynamic::UnknownType], [types::dynamic::Dynamic] and [value::value_type::ValueType],
+//! - [types::interface::Interface], [types::interface::Method], [types::interface::Trait] and [types::interface::Constructor],
+//! - [effect::Effect].
+//!
 
 
 pub mod identity;
@@ -55,8 +64,7 @@ pub mod value;
 pub mod factory;
 
 #[cfg(test)]
-mod tests {
-    use crate::effect::{EffectLifetime, EffectType};
+mod test {
     use crate::types::concept::DataType;
     use crate::types::primitive::Primitive;
     use crate::value::concept::DataValue;
@@ -64,14 +72,6 @@ mod tests {
     use crate::factory::{copy_value, create_struct};
     use crate::identity::LabelBank;
     use crate::value::record::Record;
-
-    #[test]
-    fn test_effect() {
-        let mut_effect = EffectType::new(EffectLifetime::Global, "mut");
-        let except_effect = EffectType::new(EffectLifetime::Global, "except");
-        let diverge_effect = EffectType::new(EffectLifetime::Global, "diverge");
-        let write_effect = EffectType::new(EffectLifetime::Global, "write");
-    }
 
     #[test]
     fn test() {

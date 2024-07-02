@@ -82,3 +82,8 @@ impl DataType for ProductType {
         self.0.construct_from_raw(raw)
     }
 }
+
+/// The `never` type.
+pub fn bottom_type() -> Type {
+    SumType::new(&[]).to_rc()
+}

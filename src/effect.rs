@@ -11,9 +11,9 @@ impl KindSignature {
     pub fn signature(&self) -> String {
         let mut str = String::new();
         if let Some(kind) = &self.from {
-            
+            str.push_str(&kind.signature());
         }
-        todo!()
+        str
     }
 }
 
@@ -42,15 +42,7 @@ pub enum Kind {
 
 impl Kind {
     pub fn signature(&self) -> String {
-        match self {
-            Kind::ValueType(t) => t.signature(),
-            Kind::Rows(rows) => rows.signature(),
-            Kind::Atomic(e) => e.signature(),
-            Kind::HeapType(t) => t.signature(),
-            Kind::Handler(h) => h.signature(),
-            Kind::Predicate(b) => b.to_string(),
-            Kind::Scoped(s) => s,
-        }
+        todo!()
     }
 }
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.2
+
+- Add `ToRc` trait.
+- Add `merge` method to 
+- Experimental :
+  - Effects.
+  - `ValueType`, `Dynamic` and  `UnknownType`.
+
 ## v0.3.1
 
 - Add Record::field_from_name().
@@ -8,20 +16,20 @@
 
 ## v0.3.0
 
-- Complete Label and Labelled features.
-- Add LabelBank.
-- Add Label<Type> for Enumeration and Structure types.
-- Add Label<ValueCell> for Record.
+- Complete `Label` and `Labelled` features.
+- Add `LabelBank`.
+- Add `Label<Type>` for `Enumeration` and `Structure` types.
+- Add `Label<ValueCell>` for `Record`.
 
 ## v0.2.3
 
-- create_struct().
-- copy().
+- `create_struct()`.
+- `copy()`.
 
 ## v0.2.2
 
-- Update cargo.toml.
-- (started) Interface and Traits.
+- Update `cargo.toml`.
+- (started) `Interface` and `Traits`.
 - (todo) Manage functions.
 
 ## v0.2.1
