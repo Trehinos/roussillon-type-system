@@ -1,0 +1,111 @@
+@startuml
+interface type
+interface never
+interface any {
+    todo
+}
+never --> type
+any --> type
+interface primitive
+interface datatype
+type <- datatype
+datatype <-- primitive
+class bool
+primitive <--- bool
+interface number {
+    implementation detail
+}
+class byte {
+    8 bits
+}
+number <--  byte
+class bytes(byte)
+number <-- "bytes(byte)"
+class arch
+"bytes(byte)" <-- arch
+class word {
+    2 bytes
+    16 bits
+}
+"bytes(byte)" <-- word
+class quad {
+    4 bytes
+    32 bits
+}
+"bytes(byte)" <-- quad
+class long {
+    8 bytes
+    64 bits
+}
+"bytes(byte)" <-- long
+class wide {
+    16 bytes
+    128 bits
+}
+"bytes(byte)" <-- wide
+primitive <-- number
+class int {
+    8 bytes
+    64 bits
+}
+number <--  int
+class float {
+    8 bytes
+    64 bits
+}
+number <--  float
+class &type
+primitive <-- "&type"
+class " [type, arch]"
+primitive <-- " [type, arch]"
+class "&[type, arch]"
+"&type" <-- "&[type, arch]"
+" [type, arch]" <-- "&[type, arch]"
+"box(type)" --> datatype
+"dyn(type)" --> datatype
+class tuple
+class unit
+type <-- tuple
+tuple <-- unit
+interface adt
+interface gadt {
+    todo
+}
+class trait {
+    todo
+}
+class model {
+    todo
+}
+class enum
+class record
+class effect {
+    todo
+}
+
+type <-- adt
+adt <-- sum
+adt <-- product
+product <-- record
+sum <-- enum
+
+type <-- gadt
+type <-- effect
+interface interface {
+    todo
+}
+type <-- interface
+interface <-- trait
+interface <-- model
+class "type -> type" {
+    wip
+}
+type <-- "type -> type"
+class box(type) {
+    wip
+}
+class dyn(type) {
+    wip
+}
+
+@enduml
