@@ -1,9 +1,22 @@
 @startuml
-interface type
-interface never
-interface any {
+interface kind {
     todo
 }
+class effect {
+    todo
+}
+kind <-- effect
+interface type
+interface never {
+    __
+    enum {}
+}
+interface any {
+    todo
+    __
+    dyn(?)
+}
+kind <- type
 never --> type
 any --> type
 interface primitive
@@ -13,7 +26,8 @@ datatype <-- primitive
 class bool
 primitive <--- bool
 interface number {
-    implementation detail
+    __
+    trait Number
 }
 class byte {
     8 bits
@@ -26,11 +40,15 @@ class arch
 class word {
     2 bytes
     16 bits
+    __
+    UTF-16 char
 }
 "bytes(byte)" <-- word
 class quad {
     4 bytes
     32 bits
+    __
+    UTF-32 char
 }
 "bytes(byte)" <-- quad
 class long {
@@ -41,31 +59,48 @@ class long {
 class wide {
     16 bytes
     128 bits
+    __
+    UUID
 }
 "bytes(byte)" <-- wide
 primitive <-- number
 class int {
     8 bytes
     64 bits
+    __
+    Signed
 }
 number <--  int
 class float {
     8 bytes
     64 bits
+    __
+    IEEE 754 binary64
 }
 number <--  float
-class &type
+class &type {
+    __
+    Reference
+}
 primitive <-- "&type"
-class " [type, arch]"
+class " [type, arch]" {
+    __
+    Array
+}
 primitive <-- " [type, arch]"
-class "&[type, arch]"
-"&type" <-- "&[type, arch]"
-" [type, arch]" <-- "&[type, arch]"
+class "&[type, arch]" {
+    __
+    Slice
+}
+primitive <-- "&[type, arch]"
 "box(type)" --> datatype
 "dyn(type)" --> datatype
 class tuple
-class unit
-type <-- tuple
+class unit {
+    __
+    ()
+}
+datatype <-- tuple
 tuple <-- unit
 interface adt
 interface gadt {
@@ -73,30 +108,31 @@ interface gadt {
 }
 class trait {
     todo
+    __
+    Implementation of an interface for a record
 }
 class model {
     todo
+    __
+    Implementation of a record
 }
 class enum
 class record
-class effect {
-    todo
-}
 
-type <-- adt
+datatype <-- adt
 adt <-- sum
 adt <-- product
 product <-- record
 sum <-- enum
 
 type <-- gadt
-type <-- effect
 interface interface {
     todo
 }
 type <-- interface
 interface <-- trait
 interface <-- model
+trait o- model
 class "type -> type" {
     wip
 }
