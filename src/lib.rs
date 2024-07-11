@@ -54,7 +54,6 @@
 //! - [effect::Effect].
 //!
 
-
 pub mod identity;
 mod parse;
 pub mod types;
@@ -62,6 +61,8 @@ pub mod types;
 pub mod effect;
 pub mod value;
 pub mod facade;
+
+pub mod experimental;
 
 #[cfg(test)]
 mod test {

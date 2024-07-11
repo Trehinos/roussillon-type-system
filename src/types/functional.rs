@@ -21,7 +21,7 @@ impl DataType for FunctionType {
     fn size(&self) -> usize { 8 }
 
     fn typename(&self) -> String {
-        format!("fn<({}), {}>", join(&self.arguments, ","), self.return_type)
+        format!("({}) -> {}", join(&self.arguments, ","), self.return_type)
     }
 
     fn construct_from_raw(&self, raw: &[u8]) -> TypeResult<ValueCell> {
