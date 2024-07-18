@@ -9,7 +9,6 @@ use crate::types::typedef::Structure;
 use crate::value::concept::{DataValue, ValueCell};
 use crate::value::error::TypeResult;
 use crate::value::sequence::Sequence;
-use crate::value::union::Union;
 
 #[derive(Clone, Debug)]
 pub struct ProductValue {

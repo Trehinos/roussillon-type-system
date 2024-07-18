@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use crate::identity::Identifier;
 use crate::types::concept::{DataType, Type};
-use crate::types::sequence::{join, Tuple};
+use crate::types::sequence::Tuple;
 use crate::value::concept::ValueCell;
 use crate::value::error::TypeResult;
 
@@ -21,10 +21,10 @@ impl DataType for FunctionType {
     fn size(&self) -> usize { 8 }
 
     fn typename(&self) -> String {
-        format!("fn<({}), {}>", join(&self.arguments, ","), self.return_type)
+        format!("{} -> {}", self.arguments.typename(), self.return_type)
     }
 
-    fn construct_from_raw(&self, raw: &[u8]) -> TypeResult<ValueCell> {
+    fn construct_from_raw(&self, _raw: &[u8]) -> TypeResult<ValueCell> {
         todo!()
     }
 }

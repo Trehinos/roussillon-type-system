@@ -13,7 +13,6 @@ use crate::value::boolean::Boolean;
 use crate::value::byte::Bytes;
 use crate::value::concept::ValueCell;
 use crate::value::error::{TypeError, TypeResult};
-use crate::value::list;
 use crate::value::number::{Float, Integer};
 use crate::value::reference::Reference;
 use crate::value::list::List as ListValue;

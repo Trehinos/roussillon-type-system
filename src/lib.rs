@@ -49,7 +49,7 @@
 //!
 //! > These types are experimental and should not be used yet.
 //!
-//! - [types::dynamic::UnknownType], [types::dynamic::Dynamic] and [value::value_type::ValueType],
+//! - [types::dynamic::AnyType], [types::dynamic::Dynamic] and [value::value_type::ValueType],
 //! - [types::interface::Interface], [types::interface::Method], [types::interface::Trait] and [types::interface::Constructor],
 //! - [effect::Effect].
 //!
@@ -65,7 +65,6 @@ pub mod facade;
 
 #[cfg(test)]
 mod test {
-    use crate::types::concept::DataType;
     use crate::types::primitive::Primitive;
     use crate::value::concept::DataValue;
     use crate::value::number::{Float, Integer};

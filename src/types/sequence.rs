@@ -34,7 +34,7 @@ impl DataType for Tuple {
     }
 
     fn typename(&self) -> String {
-        join(self, ",")
+        format!("({})", join(self, ","))
     }
 
     fn construct_from_raw(&self, raw: &[u8]) -> TypeResult<ValueCell> {

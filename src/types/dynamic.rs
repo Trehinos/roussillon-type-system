@@ -3,6 +3,21 @@ use crate::types::concept::{DataType, Type};
 use crate::value::concept::ValueCell;
 use crate::value::error::{TypeError, TypeResult};
 
+#[derive(Clone)]
+pub enum TypeVariable {
+    Label(String),
+    Type(Type),
+}
+
+impl TypeVariable {
+    pub fn typename(&self) -> String {
+        match self {
+            TypeVariable::Label(l) => format!("dyn<{}>", l),
+            TypeVariable::Type(t) => t.typename(),
+        }
+    }
+}
+
 pub struct VoidType;
 
 impl VoidType {
@@ -17,44 +32,47 @@ impl DataType for VoidType {
     fn construct_from_raw(&self, _: &[u8]) -> TypeResult<ValueCell> { Err(TypeError::Message("Cannot construct an object from a <void>.".to_string())) }
 }
 
-pub struct UnknownType;
+pub struct AnyType;
 
-impl DataType for UnknownType {
+impl DataType for AnyType {
     fn size(&self) -> usize { 0 }
 
-    fn typename(&self) -> String { "unknown".to_string() }
+    fn typename(&self) -> String { "any".to_string() }
 
-    fn construct_from_raw(&self, _: &[u8]) -> TypeResult<ValueCell> { Err(TypeError::Message("Cannot construct an object from an <Unknown>.".to_string())) }
+    fn construct_from_raw(&self, _: &[u8]) -> TypeResult<ValueCell> { Err(TypeError::Message("Cannot construct an object from an <Any>.".to_string())) }
 }
 
 #[derive(Clone)]
 pub enum Dynamic {
-    Unknown,
-    Named(String),
+    Any,
+    TypeVar(TypeVariable),
     Defined(Type),
 }
 
 impl DataType for Dynamic {
     fn size(&self) -> usize {
         match self {
-            Dynamic::Unknown => 0,
-            Dynamic::Named(_) => 0,
+            Dynamic::Any => 0,
+            Dynamic::TypeVar(_) => 0,
             Dynamic::Defined(t) => t.size(),
         }
     }
 
     fn typename(&self) -> String {
         match self {
-            Dynamic::Unknown => "dyn<?>".to_string(),
-            Dynamic::Named(n) => format!("dyn<{}>", n),
+            Dynamic::Any => "any".to_string(),
+            Dynamic::TypeVar(n) => n.typename(),
             Dynamic::Defined(t) => t.typename(),
         }
     }
 
     fn construct_from_raw(&self, raw: &[u8]) -> TypeResult<ValueCell> {
         match self {
-            Dynamic::Unknown => UnknownType.construct_from_raw(raw),
-            Dynamic::Named(_) => UnknownType.construct_from_raw(raw),
+            Dynamic::Any => AnyType.construct_from_raw(raw),
+            Dynamic::TypeVar(v) => match v {
+                TypeVariable::Label(_) => AnyType.construct_from_raw(raw),
+                TypeVariable::Type(t) => t.construct_from_raw(raw),
+            },
             Dynamic::Defined(t) => t.construct_from_raw(raw),
         }
     }
