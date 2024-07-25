@@ -7,7 +7,7 @@ use crate::types::concept::Type;
 use crate::types::primitive::Primitive;
 use crate::value::concept::{DataValue, ValueCell};
 
-#[derive(Clone, Debug)]
+#[derive(Copy, Clone, Debug, Default)]
 pub struct Byte(u8);
 impl Byte { pub fn from(raw: &[u8]) -> Self { Self(u8::from_be_bytes(raw.try_into().unwrap())) } }
 impl DataValue for Byte {
@@ -15,7 +15,8 @@ impl DataValue for Byte {
     fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
     fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
 }
-#[derive(Clone, Debug)]
+
+#[derive(Copy, Clone, Debug, Default)]
 pub struct Word(u16);
 impl Word { pub fn from(raw: &[u8]) -> Self { Self(u16::from_be_bytes(raw.try_into().unwrap())) } }
 impl DataValue for Word {
@@ -23,7 +24,8 @@ impl DataValue for Word {
     fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
     fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
 }
-#[derive(Clone, Debug)]
+
+#[derive(Copy, Clone, Debug, Default)]
 pub struct Quad(u32);
 impl Quad { pub fn from(raw: &[u8]) -> Self { Self(u32::from_be_bytes(raw.try_into().unwrap())) } }
 impl DataValue for Quad {
@@ -31,7 +33,8 @@ impl DataValue for Quad {
     fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
     fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
 }
-#[derive(Clone, Debug)]
+
+#[derive(Copy, Clone, Debug, Default)]
 pub struct Long(u64);
 impl Long { pub fn from(raw: &[u8]) -> Self { Self(u64::from_be_bytes(raw.try_into().unwrap())) } }
 impl DataValue for Long {
@@ -39,7 +42,8 @@ impl DataValue for Long {
     fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
     fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
 }
-#[derive(Clone, Debug)]
+
+#[derive(Copy, Clone, Debug, Default)]
 pub struct Wide(u128);
 impl Wide { pub fn from(raw: &[u8]) -> Self { Self(u128::from_be_bytes(raw.try_into().unwrap())) } }
 impl DataValue for Wide {
@@ -47,9 +51,13 @@ impl DataValue for Wide {
     fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
     fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
 }
-#[derive(Clone, Debug)]
+
+#[derive(Copy, Clone, Debug, Default)]
 pub struct Arch(usize);
-impl Arch { pub fn from(raw: &[u8]) -> Self { Self(usize::from_be_bytes(raw.try_into().unwrap())) } }
+impl Arch { 
+    pub const fn size_of() -> usize { std::mem::size_of::<usize>() }
+    pub fn from(raw: &[u8]) -> Self { Self(usize::from_be_bytes(raw.try_into().unwrap())) } 
+}
 impl DataValue for Arch {
     fn data_type(&self) -> Type { Primitive::Bytes(std::mem::size_of::<usize>()).to_rc() }
     fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
@@ -67,6 +75,9 @@ pub enum Bytes {
     Bytes(Vec<u8>, usize),
 }
 
+#[derive(Debug)]
+pub struct CannotCreateArchWithGivenSize(pub usize);
+
 impl Bytes {
     pub fn parse(input: &[u8], size: usize) -> Parsed<Self> {
         let (Some(raw), rest) = parse_slice(input, size) else { return (None, input); };
@@ -74,6 +85,9 @@ impl Bytes {
     }
 
     pub fn from(raw: &[u8]) -> Self {
+        if raw.len() == Arch::size_of() {
+            return Self::try_from_arch(raw).unwrap();
+        }
         match raw.len() {
             1 => Self::Byte(Byte::from(raw)),
             2 => Self::Word(Word::from(raw)),
@@ -84,11 +98,11 @@ impl Bytes {
         }
     }
 
-    pub fn try_from_arch(raw: &[u8]) -> Result<Self, ()> {
-        if raw.len() == std::mem::size_of::<usize>() {
+    pub fn try_from_arch(raw: &[u8]) -> Result<Self, CannotCreateArchWithGivenSize> {
+        if raw.len() == Arch::size_of() {
             Ok(Self::Arch(Arch::from(raw)))
         } else {
-            Err(())
+            Err(CannotCreateArchWithGivenSize(raw.len()))
         }
     }
 

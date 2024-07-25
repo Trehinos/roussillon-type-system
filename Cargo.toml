@@ -2,7 +2,7 @@
 name = "roussillon-type-system"
 description = "A type system for a programming language"
 authors = ["Sébastien GELDREICH <trehinos@gmail.com>"]
-version = "0.3.3"
+version = "0.3.4"
 edition = "2021"
 license = "MIT"
 keywords = ["type-system", "types"]

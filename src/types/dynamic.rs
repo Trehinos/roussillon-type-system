@@ -77,3 +77,5 @@ impl DataType for Dynamic {
         }
     }
 }
+
+pub fn top_type() -> Type { Rc::new(Dynamic::Any) }

@@ -1,8 +1,16 @@
 # Changelog
 
+## v0.3.4
+
+- New error `CannotCreateArchWithGivenSize` returned in the function `Bytes::try_from_arch()`.
+- Add `Arch::size_of()` as a constant function.
+- Implements `Copy` and `Default` (derive) for `Byte`, `Word`, `Quad`, `Long`, `Wide`, `Arch`, `Integer` and `Float`.
+- Some documentation update.
+- (experimental) Add `top_type()` in the `dynamic` module.
+
 ## v0.3.3
 
-- Individual ValueTypes `Byte`, `Word`, `Quad`, `Long`, `Wide` and `Arch`.
+- Individual DataValues `Byte`, `Word`, `Quad`, `Long`, `Wide` and `Arch`.
 
 ## v0.3.2
 
@@ -14,7 +22,7 @@
 
 ## v0.3.1
 
-- Add Record::field_from_name().
+- Add `Record::field_from_name()`.
 - Modified : module "typing" renamed to "types".
 - (experimental) Interface, functions, effects.
 
@@ -38,37 +46,37 @@
 
 ## v0.2.1
 
-- Fix construct_from_raw in Structure
+- Fix `construct_from_raw` in `Structure`.
 
 ## v0.2.0
 
-- Add raw-value based constructors to DataType implementation and all types except for FunctionType.
-- Add method 'from' in List, Sequence, ProductValue, SumValue, Record and Union.
-- Add method 'to_cell' in ProductValue and Record.
+- Add raw-value based constructors to `DataType` implementation and all types except for `FunctionType`.
+- Add method `from()` in `List`, `Sequence`, `ProductValue`, `SumValue`, `Record` and `Union`.
+- Add method `to_cell()` in `ProductValue` and `Record`.
 
 ## v0.1.5
 
-- Add parsing functionality for Boolean, Bytes, Integer and Float values.
+- Add parsing functionality for `Boolean`, `Bytes`, `Integer` and `Float` values.
 - Rename 'typing' module to 'types'.
 - Rename 'identify' module to 'identity'.
 
 ## v0.1.4
 
-- Add for SumType.
-- Mul for ProductType.
+- `Add` for `SumType`.
+- `Mul` for `ProductType`.
 
 ## v0.1.3
 
-- Add method 'from' in Integer and Float values.
-- Modify method 'from' in Reference : the referenced type must be provided.
+- Add method `from` in `Integer` and `Float` values.
+- Modify method `from` in `Reference` : the referenced type must be provided.
 
 ## v0.1.2
 
-- Add method 'from' in Boolean value.
+- Add method `from` in `Boolean` value.
 
 ## v0.1.1
 
-- Add method 'from' in Reference value.
+- Add method `from` in `Reference` value.
 
 ## v0.1.0
 

@@ -6,7 +6,7 @@ use crate::types::concept::Type;
 use crate::types::primitive::Primitive;
 use crate::value::concept::{DataValue, ValueCell};
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, Default)]
 pub struct Float(f64);
 
 impl Float {
@@ -40,7 +40,7 @@ impl DataValue for Float {
 }
 
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, Default)]
 pub struct Integer(i64);
 
 impl Integer {
