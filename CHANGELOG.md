@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.3
+
+- Individual ValueTypes `Byte`, `Word`, `Quad`, `Long`, `Wide` and `Arch`.
+
 ## v0.3.2
 
 - Add `ToRc` trait.

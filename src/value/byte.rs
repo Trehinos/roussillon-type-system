@@ -1,5 +1,6 @@
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::{u64, usize};
 use crate::parse::{parse_slice, Parsed};
 
 use crate::types::concept::Type;
@@ -7,13 +8,62 @@ use crate::types::primitive::Primitive;
 use crate::value::concept::{DataValue, ValueCell};
 
 #[derive(Clone, Debug)]
+pub struct Byte(u8);
+impl Byte { pub fn from(raw: &[u8]) -> Self { Self(u8::from_be_bytes(raw.try_into().unwrap())) } }
+impl DataValue for Byte {
+    fn data_type(&self) -> Type { Primitive::Byte.to_rc() }
+    fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
+    fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
+}
+#[derive(Clone, Debug)]
+pub struct Word(u16);
+impl Word { pub fn from(raw: &[u8]) -> Self { Self(u16::from_be_bytes(raw.try_into().unwrap())) } }
+impl DataValue for Word {
+    fn data_type(&self) -> Type { Primitive::Bytes(2).to_rc() }
+    fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
+    fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
+}
+#[derive(Clone, Debug)]
+pub struct Quad(u32);
+impl Quad { pub fn from(raw: &[u8]) -> Self { Self(u32::from_be_bytes(raw.try_into().unwrap())) } }
+impl DataValue for Quad {
+    fn data_type(&self) -> Type { Primitive::Bytes(4).to_rc() }
+    fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
+    fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
+}
+#[derive(Clone, Debug)]
+pub struct Long(u64);
+impl Long { pub fn from(raw: &[u8]) -> Self { Self(u64::from_be_bytes(raw.try_into().unwrap())) } }
+impl DataValue for Long {
+    fn data_type(&self) -> Type { Primitive::Bytes(8).to_rc() }
+    fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
+    fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
+}
+#[derive(Clone, Debug)]
+pub struct Wide(u128);
+impl Wide { pub fn from(raw: &[u8]) -> Self { Self(u128::from_be_bytes(raw.try_into().unwrap())) } }
+impl DataValue for Wide {
+    fn data_type(&self) -> Type { Primitive::Bytes(16).to_rc() }
+    fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
+    fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
+}
+#[derive(Clone, Debug)]
+pub struct Arch(usize);
+impl Arch { pub fn from(raw: &[u8]) -> Self { Self(usize::from_be_bytes(raw.try_into().unwrap())) } }
+impl DataValue for Arch {
+    fn data_type(&self) -> Type { Primitive::Bytes(std::mem::size_of::<usize>()).to_rc() }
+    fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
+    fn set(&mut self, raw: &[u8]) { *self = Self::from(raw) }
+}
+
+#[derive(Clone, Debug)]
 pub enum Bytes {
-    Byte(u8),
-    Word(u16),
-    Quad(u32),
-    Long(u64),
-    Wide(u128),
-    Arch(usize),
+    Byte(Byte),
+    Word(Word),
+    Quad(Quad),
+    Long(Long),
+    Wide(Wide),
+    Arch(Arch),
     Bytes(Vec<u8>, usize),
 }
 
@@ -25,18 +75,18 @@ impl Bytes {
 
     pub fn from(raw: &[u8]) -> Self {
         match raw.len() {
-            1 => Self::Byte(u8::from_be_bytes(raw.try_into().unwrap())),
-            2 => Self::Word(u16::from_be_bytes(raw.try_into().unwrap())),
-            4 => Self::Quad(u32::from_be_bytes(raw.try_into().unwrap())),
-            8 => Self::Long(u64::from_be_bytes(raw.try_into().unwrap())),
-            16 => Self::Wide(u128::from_be_bytes(raw.try_into().unwrap())),
+            1 => Self::Byte(Byte::from(raw)),
+            2 => Self::Word(Word::from(raw)),
+            4 => Self::Quad(Quad::from(raw)),
+            8 => Self::Long(Long::from(raw)),
+            16 => Self::Wide(Wide::from(raw)),
             l => Self::Bytes(raw.to_vec(), l)
         }
     }
 
     pub fn try_from_arch(raw: &[u8]) -> Result<Self, ()> {
         if raw.len() == std::mem::size_of::<usize>() {
-            Ok(Self::Arch(usize::from_be_bytes(raw.try_into().unwrap())))
+            Ok(Self::Arch(Arch::from(raw)))
         } else {
             Err(())
         }
@@ -60,12 +110,12 @@ impl DataValue for Bytes {
 
     fn raw(&self) -> Vec<u8> {
         match self {
-            Bytes::Byte(b) => b.to_be_bytes().to_vec(),
-            Bytes::Arch(a) => a.to_be_bytes().to_vec(),
-            Bytes::Word(w) => w.to_be_bytes().to_vec(),
-            Bytes::Quad(q) => q.to_be_bytes().to_vec(),
-            Bytes::Long(l) => l.to_be_bytes().to_vec(),
-            Bytes::Wide(w) => w.to_be_bytes().to_vec(),
+            Bytes::Byte(b) => b.raw(),
+            Bytes::Arch(a) => a.raw(),
+            Bytes::Word(w) => w.raw(),
+            Bytes::Quad(q) => q.raw(),
+            Bytes::Long(l) => l.raw(),
+            Bytes::Wide(w) => w.raw(),
             Bytes::Bytes(b, _) => b.to_vec(),
         }
     }
