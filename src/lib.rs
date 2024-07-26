@@ -57,11 +57,10 @@
 pub mod identity;
 mod parse;
 pub mod types;
-#[cfg(feature = "experiments")]
-pub mod effect;
 pub mod value;
 pub mod facade;
 
+#[cfg(feature = "experiments")]
 pub mod experimental;
 
 #[cfg(test)]

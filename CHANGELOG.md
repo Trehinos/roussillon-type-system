@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.5
+
+- Add module `experimental` and feature `experiments`.
+
 ## v0.3.4
 
 - New error `CannotCreateArchWithGivenSize` returned in the function `Bytes::try_from_arch()`.
