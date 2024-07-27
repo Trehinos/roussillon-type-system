@@ -9,7 +9,10 @@ use crate::value::concept::{DataValue, ValueCell};
 
 #[derive(Copy, Clone, Debug, Default)]
 pub struct Byte(u8);
-impl Byte { pub fn from(raw: &[u8]) -> Self { Self(u8::from_be_bytes(raw.try_into().unwrap())) } }
+impl Byte {
+    pub fn new(from: u8) -> Self { Self(from) }
+    pub fn from(raw: &[u8]) -> Self { Self(u8::from_be_bytes(raw.try_into().unwrap())) }
+}
 impl DataValue for Byte {
     fn data_type(&self) -> Type { Primitive::Byte.to_rc() }
     fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
@@ -18,7 +21,10 @@ impl DataValue for Byte {
 
 #[derive(Copy, Clone, Debug, Default)]
 pub struct Word(u16);
-impl Word { pub fn from(raw: &[u8]) -> Self { Self(u16::from_be_bytes(raw.try_into().unwrap())) } }
+impl Word {
+    pub fn new(from: u16) -> Self { Self(from) }
+    pub fn from(raw: &[u8]) -> Self { Self(u16::from_be_bytes(raw.try_into().unwrap())) } 
+}
 impl DataValue for Word {
     fn data_type(&self) -> Type { Primitive::Bytes(2).to_rc() }
     fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
@@ -27,7 +33,10 @@ impl DataValue for Word {
 
 #[derive(Copy, Clone, Debug, Default)]
 pub struct Quad(u32);
-impl Quad { pub fn from(raw: &[u8]) -> Self { Self(u32::from_be_bytes(raw.try_into().unwrap())) } }
+impl Quad {
+    pub fn new(from: u32) -> Self { Self(from) }
+    pub fn from(raw: &[u8]) -> Self { Self(u32::from_be_bytes(raw.try_into().unwrap())) } 
+}
 impl DataValue for Quad {
     fn data_type(&self) -> Type { Primitive::Bytes(4).to_rc() }
     fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
@@ -36,7 +45,10 @@ impl DataValue for Quad {
 
 #[derive(Copy, Clone, Debug, Default)]
 pub struct Long(u64);
-impl Long { pub fn from(raw: &[u8]) -> Self { Self(u64::from_be_bytes(raw.try_into().unwrap())) } }
+impl Long {
+    pub fn new(from: u64) -> Self { Self(from) }
+    pub fn from(raw: &[u8]) -> Self { Self(u64::from_be_bytes(raw.try_into().unwrap())) } 
+}
 impl DataValue for Long {
     fn data_type(&self) -> Type { Primitive::Bytes(8).to_rc() }
     fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
@@ -45,7 +57,10 @@ impl DataValue for Long {
 
 #[derive(Copy, Clone, Debug, Default)]
 pub struct Wide(u128);
-impl Wide { pub fn from(raw: &[u8]) -> Self { Self(u128::from_be_bytes(raw.try_into().unwrap())) } }
+impl Wide {
+    pub fn new(from: u128) -> Self { Self(from) }
+    pub fn from(raw: &[u8]) -> Self { Self(u128::from_be_bytes(raw.try_into().unwrap())) } 
+}
 impl DataValue for Wide {
     fn data_type(&self) -> Type { Primitive::Bytes(16).to_rc() }
     fn raw(&self) -> Vec<u8> { self.0.to_be_bytes().to_vec() }
@@ -54,7 +69,8 @@ impl DataValue for Wide {
 
 #[derive(Copy, Clone, Debug, Default)]
 pub struct Arch(usize);
-impl Arch { 
+impl Arch {
+    pub fn new(from: usize) -> Self { Self(from) }
     pub const fn size_of() -> usize { std::mem::size_of::<usize>() }
     pub fn from(raw: &[u8]) -> Self { Self(usize::from_be_bytes(raw.try_into().unwrap())) } 
 }
