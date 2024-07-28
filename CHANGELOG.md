@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.6
+
+- Add `new` method in `Byte`, `Word`, `Quad`, `Long`, `Wide`, `Arch`, `Integer` and `Float`.
+
 ## v0.3.5
 
 - Add module `experimental` and feature `experiments`.
