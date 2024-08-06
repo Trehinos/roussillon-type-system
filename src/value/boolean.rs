@@ -6,7 +6,7 @@ use crate::types::concept::Type;
 use crate::types::primitive::Primitive;
 use crate::value::concept::{DataValue, ValueCell};
 
-#[derive(Clone, Debug)]
+#[derive(Copy, Clone, Debug)]
 pub struct Boolean(bool);
 
 impl Boolean {

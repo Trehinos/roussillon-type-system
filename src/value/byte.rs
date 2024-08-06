@@ -12,6 +12,7 @@ pub struct Byte(u8);
 impl Byte {
     pub fn new(from: u8) -> Self { Self(from) }
     pub fn from(raw: &[u8]) -> Self { Self(u8::from_be_bytes(raw.try_into().unwrap())) }
+    pub fn get(&self) -> u8 { self.0 }
 }
 impl DataValue for Byte {
     fn data_type(&self) -> Type { Primitive::Byte.to_rc() }
@@ -23,7 +24,8 @@ impl DataValue for Byte {
 pub struct Word(u16);
 impl Word {
     pub fn new(from: u16) -> Self { Self(from) }
-    pub fn from(raw: &[u8]) -> Self { Self(u16::from_be_bytes(raw.try_into().unwrap())) } 
+    pub fn from(raw: &[u8]) -> Self { Self(u16::from_be_bytes(raw.try_into().unwrap())) }
+    pub fn get(&self) -> u16 { self.0 }
 }
 impl DataValue for Word {
     fn data_type(&self) -> Type { Primitive::Bytes(2).to_rc() }
@@ -35,7 +37,8 @@ impl DataValue for Word {
 pub struct Quad(u32);
 impl Quad {
     pub fn new(from: u32) -> Self { Self(from) }
-    pub fn from(raw: &[u8]) -> Self { Self(u32::from_be_bytes(raw.try_into().unwrap())) } 
+    pub fn from(raw: &[u8]) -> Self { Self(u32::from_be_bytes(raw.try_into().unwrap())) }
+    pub fn get(&self) -> u32 { self.0 }
 }
 impl DataValue for Quad {
     fn data_type(&self) -> Type { Primitive::Bytes(4).to_rc() }
@@ -47,7 +50,8 @@ impl DataValue for Quad {
 pub struct Long(u64);
 impl Long {
     pub fn new(from: u64) -> Self { Self(from) }
-    pub fn from(raw: &[u8]) -> Self { Self(u64::from_be_bytes(raw.try_into().unwrap())) } 
+    pub fn from(raw: &[u8]) -> Self { Self(u64::from_be_bytes(raw.try_into().unwrap())) }
+    pub fn get(&self) -> u64 { self.0 }
 }
 impl DataValue for Long {
     fn data_type(&self) -> Type { Primitive::Bytes(8).to_rc() }
@@ -59,7 +63,8 @@ impl DataValue for Long {
 pub struct Wide(u128);
 impl Wide {
     pub fn new(from: u128) -> Self { Self(from) }
-    pub fn from(raw: &[u8]) -> Self { Self(u128::from_be_bytes(raw.try_into().unwrap())) } 
+    pub fn from(raw: &[u8]) -> Self { Self(u128::from_be_bytes(raw.try_into().unwrap())) }
+    pub fn get(&self) -> u128 { self.0 }
 }
 impl DataValue for Wide {
     fn data_type(&self) -> Type { Primitive::Bytes(16).to_rc() }
@@ -72,7 +77,8 @@ pub struct Arch(usize);
 impl Arch {
     pub fn new(from: usize) -> Self { Self(from) }
     pub const fn size_of() -> usize { std::mem::size_of::<usize>() }
-    pub fn from(raw: &[u8]) -> Self { Self(usize::from_be_bytes(raw.try_into().unwrap())) } 
+    pub fn from(raw: &[u8]) -> Self { Self(usize::from_be_bytes(raw.try_into().unwrap())) }
+    pub fn get(&self) -> usize { self.0 }
 }
 impl DataValue for Arch {
     fn data_type(&self) -> Type { Primitive::Bytes(std::mem::size_of::<usize>()).to_rc() }
@@ -111,6 +117,18 @@ impl Bytes {
             8 => Self::Long(Long::from(raw)),
             16 => Self::Wide(Wide::from(raw)),
             l => Self::Bytes(raw.to_vec(), l)
+        }
+    }
+
+    pub fn get(&self) -> Vec<u8> {
+        match self {
+            Bytes::Byte(v) => vec![v.get()],
+            Bytes::Word(v) => v.get().to_be_bytes().to_vec(),
+            Bytes::Quad(v) => v.get().to_be_bytes().to_vec(),
+            Bytes::Long(v) => v.get().to_be_bytes().to_vec(),
+            Bytes::Wide(v) => v.get().to_be_bytes().to_vec(),
+            Bytes::Arch(v) => v.get().to_be_bytes().to_vec(),
+            Bytes::Bytes(b, _) => b.to_vec(),
         }
     }
 

@@ -85,7 +85,7 @@ impl Record {
         Ok(
             Self {
                 of_type: structure_type,
-                value: ProductValue::from(product, raw)?,
+                value: ProductValue::from(product, raw)?, 
             }
         )
     }
