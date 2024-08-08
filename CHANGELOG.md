@@ -4,6 +4,10 @@
 
 - Add `get` method to `Byte` and other numeric structs.
 
+## v0.3.7
+
+- Implement `GetDataValue` trait for byte components.
+
 ## v0.3.6
 
 - Add `new` method in `Byte`, `Word`, `Quad`, `Long`, `Wide`, `Arch`, `Integer` and `Float`.

@@ -28,3 +28,8 @@ impl Debug for dyn DataValue {
 }
 
 pub type ValueCell = Rc<RefCell<dyn DataValue>>;
+
+pub trait GetDataValue<T>: DataValue {
+    fn get(&self) -> T;
+    fn from_raw(raw: &[u8]) -> Self;
+}

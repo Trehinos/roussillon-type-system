@@ -11,7 +11,7 @@ use std::rc::Rc;
 use crate::types::concept::{DataType, Type};
 use crate::value::boolean::Boolean;
 use crate::value::byte::Bytes;
-use crate::value::concept::ValueCell;
+use crate::value::concept::{GetDataValue, ValueCell};
 use crate::value::error::{TypeError, TypeResult};
 use crate::value::number::{Float, Integer};
 use crate::value::reference::Reference;
@@ -104,13 +104,13 @@ impl DataType for Primitive {
     fn construct_from_raw(&self, raw: &[u8]) -> TypeResult<ValueCell> {
         match self {
             Primitive::Boolean => Ok(Boolean::from(raw).to_cell()),
-            Primitive::Byte => if raw.len() == 1 { Ok(Bytes::from(raw).to_cell()) } else {
+            Primitive::Byte => if raw.len() == 1 { Ok(Bytes::from_raw(raw).to_cell()) } else {
                 Err(TypeError::InvalidType {
                     expected: self.clone().to_rc(),
                     provided: Primitive::Bytes(raw.len()).to_rc(),
                 })
             },
-            Primitive::Bytes(s) => if raw.len() == *s { Ok(Bytes::from(raw).to_cell()) } else {
+            Primitive::Bytes(s) => if raw.len() == *s { Ok(Bytes::from_raw(raw).to_cell()) } else {
                 Err(TypeError::InvalidType {
                     expected: self.clone().to_rc(),
                     provided: Primitive::Bytes(raw.len()).to_rc(),
