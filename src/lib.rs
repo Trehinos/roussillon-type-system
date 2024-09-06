@@ -50,8 +50,7 @@
 //! > These types are experimental and should not be used yet.
 //!
 //! - [types::dynamic::AnyType], [types::dynamic::Dynamic] and [value::value_type::ValueType],
-//! - [types::interface::Interface], [types::interface::Method], [types::interface::Trait] and [types::interface::Constructor],
-//! - [effect::Effect].
+//! - [types::interface::Interface].
 //!
 
 pub mod identity;
@@ -62,6 +61,7 @@ pub mod facade;
 
 #[cfg(test)]
 mod test {
+    use std::rc::Rc;
     use crate::types::primitive::Primitive;
     use crate::value::concept::DataValue;
     use crate::value::number::{Float, Integer};
@@ -82,7 +82,7 @@ mod test {
         ]);
         println!("\n{:?}", my_struct.as_ref());
 
-        let object = Record::new(my_struct.clone(), &[
+        let object = Record::new(Rc::clone(&my_struct), &[
             Integer::new(40).to_cell(),
             Integer::new(96).to_cell(),
             Float::new(40.0).to_cell()

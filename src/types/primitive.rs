@@ -124,8 +124,8 @@ impl DataType for Primitive {
             },
             Primitive::Float => Ok(Float::from(raw).to_cell()),
             Primitive::Integer => Ok(Integer::from(raw).to_cell()),
-            Primitive::Reference(t) => Ok(Reference::from(t.clone(), raw).to_cell()),
-            Primitive::List(t) => Ok(ListValue::from(t.0.clone(), t.1, raw).to_cell())
+            Primitive::Reference(t) => Ok(Reference::from(Rc::clone(t), raw).to_cell()),
+            Primitive::List(t) => Ok(ListValue::from(Rc::clone(&t.0), t.1, raw).to_cell())
         }
     }
 }
