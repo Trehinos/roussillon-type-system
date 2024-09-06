@@ -1,147 +1,197 @@
 @startuml
-interface kind {
-    todo
+interface Any {
+    --
+    type_id: &Self -> arch
+    size_of: &Self -> arch
 }
-class effect {
-    todo
+interface Copy {
+    --
+    copy: &Self -> Self
 }
-kind <-- effect
-interface type
-interface never {
-    __
-    enum {}
+interface Displayable {
+    --
+    to_string: &Self -> String
 }
-interface any {
-    todo
-    __
-    dyn(?)
+
+Any <.. Primitive
+Copy <.. Primitive
+Displayable <.. Primitive
+abstract Primitive
+
+interface Boolean {
+    --
+    and (&) : (&bool, &bool) -> bool
+    or (|) : (&bool, &bool) -> bool
+    xor (^) : (&bool, &bool) -> bool
+    eqv (|<>|): (&bool, &bool) -> bool
+    not (!): &bool -> bool
+    nand (!&) : (&bool, &bool) -> bool
+    nor (!|) : (&bool, &bool) -> bool
+    imp  (|>) : (&bool, &bool) -> bool
+    nimp (|!>) : (&bool, &bool) -> bool
+    rimp (<|) : (&bool, &bool) -> bool
+    rnimp (<!|) : (&bool, &bool) -> bool
+    ternary<L,R> (?,:) : (&bool, L, R) -> L:R
 }
-kind <- type
-never --> type
-any --> type
-interface primitive
-interface datatype
-type <- datatype
-datatype <-- primitive
+Primitive <--- bool
+Boolean <-- bool
 class bool
-primitive <--- bool
-interface number {
-    __
-    trait Number
+
+interface Bitwise {
+    --
+    and (&) : (&Self, &Self) -> Self
+    or (|) : (&Self, &Self) -> Self
+    xor (^) : (&Self, &Self) -> Self
+    eqv (|<>|) : (&Self, &Self) -> Self
+    nand (!&) : (&Self, &Self) -> Self
+    nor (!|) : (&Self, &Self) -> Self
+    imp (|>) : (&Self, &Self) -> Self
+    nimp (|!>) : (&Self, &Self) -> Self
+    rimp (<|) : (&Self, &Self) -> Self
+    rnimp (<!|) : (&Self, &Self) -> Self
 }
-class byte {
-    8 bits
+interface Equal {
+    --
+    eq (==) : (&Self, &Self) -> bool
+    ne (!=) : (&Self, &Self) -> bool
 }
-number <--  byte
-class bytes(byte)
-number <-- "bytes(byte)"
-class arch
-"bytes(byte)" <-- arch
+interface Compare {
+    --
+    gt (>) : (&Self, &Self) -> bool
+    ge (>=) : (&Self, &Self) -> bool
+    ge (<=) : (&Self, &Self) -> bool
+    lt (<) : (&Self, &Self) -> bool
+    min : (&Self, &Self) -> Sel,
+    max : (&Self, &Self) -> Self
+}
+interface SignedArithmetic {
+    --
+    add (+) : (&Self, &Self) -> (Self, Self)
+    sub (-) : (&Self, &Self) -> (Self, Self)
+    mul (*) : (&Self, &Self) -> (Self, Self)
+    div (/) : (&Self, &Self) -> (Self, Self)
+    mod (%) : (&Self, &Self) -> (Self, Self)
+}
+Primitive <-- Native
+Bitwise <.. Native
+Equal <.. Native
+Compare <.. Native
+SignedArithmetic <.. Native
+interface Bitset {
+    bit : (&word, byte) -> bool
+    set : (&mut word, byte, bool) -> ()
+}
+Bitset <.. Native
+abstract Native
+Native <-- byte
+class byte
+
+interface Byteset {
+    merge : (&Self, &bytes< u >) -> bytes< s + u >
+    split : (&bytes< s + u >, arch) -> (bytes< s >, bytes< u >)
+    to_bytes : (&self) -> &[byte]
+}
+Byteset <.. bytes
+Native <-- bytes
+class bytes< s: arch >
+
+bytes <-- word
 class word {
-    2 bytes
-    16 bits
-    __
-    UTF-16 char
+    s = 2
 }
-"bytes(byte)" <-- word
+bytes <-- quad
 class quad {
-    4 bytes
-    32 bits
-    __
-    UTF-32 char
+    s = 4
 }
-"bytes(byte)" <-- quad
+bytes <-- long
 class long {
-    8 bytes
-    64 bits
+    s = 8
 }
-"bytes(byte)" <-- long
+bytes <-- wide
 class wide {
-    16 bytes
-    128 bits
-    __
-    UUID
-}
-"bytes(byte)" <-- wide
-primitive <-- number
-class int {
-    8 bytes
-    64 bits
-    __
-    Signed
-}
-number <--  int
-class float {
-    8 bytes
-    64 bits
-    __
-    IEEE 754 binary64
-}
-number <--  float
-class &type {
-    __
-    Reference
-}
-primitive <-- "&type"
-class " [type, arch]" {
-    __
-    Array
-}
-primitive <-- " [type, arch]"
-class "&[type, arch]" {
-    __
-    Slice
-}
-primitive <-- "&[type, arch]"
-"box(type)" --> datatype
-"dyn(type)" --> datatype
-class tuple
-class unit {
-    __
-    ()
-}
-datatype <-- tuple
-tuple <-- unit
-interface adt
-interface gadt {
-    todo
-}
-class trait {
-    todo
-    __
-    Implementation of an interface for a record
-}
-class model {
-    todo
-    __
-    Implementation of a record
-}
-class enum
-class record
-
-datatype <-- adt
-adt <-- sum
-adt <-- product
-product <-- record
-sum <-- enum
-
-type <-- gadt
-interface interface {
-    todo
-}
-type <-- interface
-interface <-- trait
-interface <-- model
-trait o- model
-class "type -> type" {
-    wip
-}
-type <-- "type -> type"
-class box(type) {
-    wip
-}
-class dyn(type) {
-    wip
+    s = 16
 }
 
+Native <-- arch
+class arch
+
+interface Arithmetic {
+    --
+    add (+) : (&Self, &Self) -> Self
+    sub (-) : (&Self, &Self) -> Self
+    mul (*) : (&Self, &Self) -> Self
+    div (/) : (&Self, &Self) -> Self
+    mod (%) : (&Self, &Self) -> Self
+}
+
+Compare <.. Number
+Primitive <----- Number
+Arithmetic <.. Number
+abstract Number
+
+Equal <.. int
+Number <-- int
+class int
+
+Number <-- float
+class float
+
+interface Borrowable {
+    --
+    deref (*$) : (Self) -> T
+    borrow : (&Self) -> &T
+    borrow_mut<T> : (&mut T) -> &mut T
+}
+Primitive <--- "&T"
+Borrowable <-- "&T"
+
+class "&T" {
+    mutable: bool
+}
+
+interface Collection< T > {
+    --
+    item ($[$]) : (&Self, arch) -> &T,
+    item_mut (mut $[$]) : (&mut Self, arch) -> &mut T,
+    length : &Self -> arch,
+}
+interface Iterator< T > {
+    --
+    iterate : &mut Self -> ?&T
+    iterate_mut : &mut Self -> ?&mut T
+    reset : &mut Self -> ()
+}
+interface Enumerator< T > {
+    --
+    enumerate: &mut Self -> ?(&K, &T)
+    enumerate_mut: &mut Self -> ?(&K, &mut T)
+    reset: &mut Self -> ()
+}
+
+Primitive <--- "[T; s]"
+Collection <.. "[T; s]"
+Iterator <.. "[T; s]"
+Enumerator <.. "[T; s]"
+class "[[T; s]]" {
+    --
+    get_slice: &Self -> &[T]
+}
+
+Any <.. Composite
+Copy <.. Composite
+abstract Composite
+
+Composite <-- Tuple
+class Tuple {
+    types: &[any]
+}
+Composite <-- "T & S"
+class "T & S"<T, S>
+"T & S" -o Tuple
+"T & S" <-- struct
+
+Composite <-- "T | S"
+class "T | S"< T, S >
+Tuple o- "T | S"
+"T | S" <-- enum
 @enduml
