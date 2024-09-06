@@ -60,9 +60,6 @@ pub mod types;
 pub mod value;
 pub mod facade;
 
-#[cfg(feature = "experiments")]
-pub mod experimental;
-
 #[cfg(test)]
 mod test {
     use crate::types::primitive::Primitive;

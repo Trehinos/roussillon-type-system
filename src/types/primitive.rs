@@ -7,6 +7,7 @@
 //! - [Primitive::Reference]
 //! - [Primitive::List]
 
+use std::mem::size_of;
 use std::rc::Rc;
 use crate::types::concept::{DataType, Type};
 use crate::value::boolean::Boolean;
@@ -87,12 +88,17 @@ impl DataType for Primitive {
         match self {
             Primitive::Boolean => "boolean".to_string(),
             Primitive::Byte => "byte".to_string(),
-            Primitive::Bytes(s) => match s {
-                2 => "word".to_string(),
-                4 => "quad".to_string(),
-                8 => "long".to_string(),
-                16 => "wide".to_string(),
-                &_ => format!("bytes<{}>", s)
+            Primitive::Bytes(s) => {
+                if *s == size_of::<usize>() {
+                    return "arch".to_string();
+                }
+                match s {
+                    2 => "word".to_string(),
+                    4 => "quad".to_string(),
+                    8 => "long".to_string(),
+                    16 => "wide".to_string(),
+                    &_ => format!("bytes<{}>", s)
+                }
             },
             Primitive::Float => "float".to_string(),
             Primitive::Integer => "integer".to_string(),

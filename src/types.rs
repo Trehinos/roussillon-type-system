@@ -62,5 +62,3 @@ pub mod functional;
 pub mod dynamic;
 #[cfg(feature = "experiments")]
 pub mod interface;
-#[cfg(feature = "experiments")]
-pub mod heap;
