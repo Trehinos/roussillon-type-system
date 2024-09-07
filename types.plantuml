@@ -34,7 +34,7 @@ interface Boolean {
     ternary<L,R> (?,:) : (&bool, L, R) -> L:R
 }
 Primitive <--- bool
-Boolean <-- bool
+Boolean <.. bool
 class bool
 
 interface Bitwise {
@@ -61,7 +61,7 @@ interface Compare {
     ge (>=) : (&Self, &Self) -> bool
     ge (<=) : (&Self, &Self) -> bool
     lt (<) : (&Self, &Self) -> bool
-    min : (&Self, &Self) -> Sel,
+    min : (&Self, &Self) -> Self,
     max : (&Self, &Self) -> Self
 }
 interface SignedArithmetic {
@@ -143,7 +143,7 @@ interface Borrowable {
     borrow_mut<T> : (&mut T) -> &mut T
 }
 Primitive <--- "&T"
-Borrowable <-- "&T"
+Borrowable <.. "&T"
 
 class "&T" {
     mutable: bool
