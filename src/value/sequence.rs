@@ -25,7 +25,13 @@ impl Sequence {
     
     pub fn new(definition: Tuple, values: &[ValueCell]) -> TypeResult<Self> {
         if definition.len() != values.len() {
-            return Err(SequenceError::SequenceLengthMismatch { expected: 0, provided: 0 }.promote());
+            return Err(
+                SequenceError::SequenceLengthMismatch {
+                    expected: definition.len(),
+                    provided: values.len(),
+                }
+                .promote(),
+            );
         }
         for (index, expected) in definition.iter().enumerate() {
             values[index].borrow().validate_type(expected)?;
